@@ -1,0 +1,35 @@
+{
+    "name": "Booking Flow Builder",
+    "summary": "No-code booking flow builder for Odoo Website",
+    "version": "18.0.1.0.0",
+    "category": "Website",
+    "author": "Custom",
+    "license": "LGPL-3",
+    "depends": [
+        "website",
+        "web",
+        "sale_management",
+        "calendar",
+    ],
+    "data": [
+        "security/booking_security.xml",
+        "security/ir.model.access.csv",
+        "views/booking_flow_views.xml",
+        "views/booking_step_views.xml",
+        "views/booking_session_views.xml",
+        "views/booking_menus.xml",
+        "views/website_templates.xml",
+        "snippets/booking_snippet.xml",
+        "data/booking_demo.xml",
+    ],
+    "assets": {
+        "web.assets_frontend": [
+            "booking_flow_builder/static/src/js/components/booking_root.js",
+            "booking_flow_builder/static/src/js/booking_app.js",
+            "booking_flow_builder/static/src/xml/booking_templates.xml",
+            "booking_flow_builder/static/src/scss/booking.scss",
+        ],
+    },
+    "application": True,
+    "installable": True,
+}

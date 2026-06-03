@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="booking_flow_page" name="Booking Flow">
+        <t t-call="website.layout">
+            <div id="wrap" class="o_booking_flow_page">
+                <div class="o_booking_flow_app" t-att-data-flow-slug="flow.slug"></div>
+            </div>
+        </t>
+    </template>
+</odoo>

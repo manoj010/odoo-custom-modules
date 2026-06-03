@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_booking_flow_user,booking.flow user,model_booking_flow,base.group_user,1,1,1,1
+access_booking_flow_step_user,booking.flow.step user,model_booking_flow_step,base.group_user,1,1,1,1
+access_booking_flow_option_user,booking.flow.option user,model_booking_flow_option,base.group_user,1,1,1,1
+access_booking_session_user,booking.session user,model_booking_session,base.group_user,1,1,1,1
+access_booking_session_answer_user,booking.session.answer user,model_booking_session_answer,base.group_user,1,1,1,1
+access_booking_flow_public,booking.flow public,model_booking_flow,base.group_public,1,0,0,0
+access_booking_flow_step_public,booking.flow.step public,model_booking_flow_step,base.group_public,1,0,0,0
+access_booking_flow_option_public,booking.flow.option public,model_booking_flow_option,base.group_public,1,0,0,0
+access_booking_session_public,booking.session public,model_booking_session,base.group_public,0,0,1,0
+access_booking_session_answer_public,booking.session.answer public,model_booking_session_answer,base.group_public,0,0,1,0

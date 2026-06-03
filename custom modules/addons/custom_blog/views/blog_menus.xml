@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_custom_blog_root"
+              name="Custom Blog"
+              sequence="10"/>
+
+    <menuitem id="menu_custom_blog_post"
+              name="Posts"
+              parent="menu_custom_blog_root"
+              action="action_blog_post"
+              sequence="10"/>
+</odoo>

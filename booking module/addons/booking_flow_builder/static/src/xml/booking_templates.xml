@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="booking_flow_builder.BookingRoot" owl="1">
+        <div class="o_booking_builder">
+            <t t-if="state.loading">
+                <div class="o_booking_status">Loading booking flow...</div>
+            </t>
+            <t t-elif="state.error">
+                <div class="o_booking_status o_booking_status_error" t-esc="state.error"/>
+            </t>
+            <t t-elif="state.submitted">
+                <div class="o_booking_complete">
+                    <h2>Booking received</h2>
+                    <p>Thank you. Your booking details have been saved.</p>
+                </div>
+            </t>
+            <t t-else="">
+                <div class="o_booking_shell">
+                    <main class="o_booking_main">
+                        <header class="o_booking_header">
+                            <h1 t-esc="state.flow.name"/>
+                            <ProgressBar steps="steps" activeIndex="state.activeIndex"/>
+                        </header>
+                        <t t-if="isReview">
+                            <ReviewScreen
+                                selectedAnswers="selectedAnswers"
+                                customer="state.customer"
+                                answerLabel.bind="answerLabel"
+                                setCustomer.bind="setCustomer"
+                            />
+                        </t>
+                        <t t-else="">
+                            <StepRenderer
+                                step="activeStep"
+                                answer="state.answers[activeStep.id]"
+                                formatPrice.bind="formatPrice"
+                                setSingleChoice.bind="setSingleChoice"
+                                toggleMultiChoice.bind="toggleMultiChoice"
+                                setTextAnswer.bind="setTextAnswer"
+                                setNumberAnswer.bind="setNumberAnswer"
+                            />
+                        </t>
+                        <t t-if="state.validationError">
+                            <div class="o_booking_validation" t-esc="state.validationError"/>
+                        </t>
+                        <footer class="o_booking_actions">
+                            <button t-if="state.activeIndex > 0" type="button" class="btn btn-light" t-on-click="back">Back</button>
+                            <button t-if="!isReview" type="button" class="btn btn-primary" t-on-click="next">Continue</button>
+                            <button t-if="isReview" type="button" class="btn btn-primary" t-att-disabled="state.submitting" t-on-click="submit">
+                                <t t-if="state.submitting">Submitting...</t>
+                                <t t-else="">Submit booking</t>
+                            </button>
+                        </footer>
+                    </main>
+                    <PricingSummary total="totalPrice" formatPrice.bind="formatPrice"/>
+                </div>
+            </t>
+        </div>
+    </t>
+
+    <t t-name="booking_flow_builder.ProgressBar" owl="1">
+        <div class="o_booking_progress">
+            <t t-foreach="props.steps" t-as="step" t-key="step.id">
+                <div t-att-class="'o_booking_progress_item ' + (step_index &lt;= props.activeIndex ? 'is-active' : '')">
+                    <span t-esc="step_index + 1"/>
+                    <strong t-esc="step.title"/>
+                </div>
+            </t>
+        </div>
+    </t>
+
+    <t t-name="booking_flow_builder.StepRenderer" owl="1">
+        <section class="o_booking_step">
+            <h2 t-esc="props.step.title"/>
+            <p t-if="props.step.subtitle" class="o_booking_subtitle" t-esc="props.step.subtitle"/>
+            <t t-if="props.step.step_type === 'single_choice'">
+                <div class="o_booking_options">
+                    <button
+                        t-foreach="props.step.options"
+                        t-as="option"
+                        t-key="option.id"
+                        type="button"
+                        t-att-class="'o_booking_option ' + (props.answer?.option_id === option.id ? 'is-selected' : '')"
+                        t-on-click="() => props.setSingleChoice(props.step.id, option.id)"
+                    >
+                        <img t-if="option.image_url" t-att-src="option.image_url" t-att-alt="option.label"/>
+                        <span t-esc="option.label"/>
+                        <em t-if="option.pricing_type !== 'none'" t-esc="props.formatPrice(option.pricing_value)"/>
+                    </button>
+                </div>
+            </t>
+            <t t-elif="props.step.step_type === 'multi_choice'">
+                <div class="o_booking_options">
+                    <button
+                        t-foreach="props.step.options"
+                        t-as="option"
+                        t-key="option.id"
+                        type="button"
+                        t-att-class="'o_booking_option ' + ((props.answer?.option_ids || []).includes(option.id) ? 'is-selected' : '')"
+                        t-on-click="() => props.toggleMultiChoice(props.step.id, option.id)"
+                    >
+                        <img t-if="option.image_url" t-att-src="option.image_url" t-att-alt="option.label"/>
+                        <span t-esc="option.label"/>
+                        <em t-if="option.pricing_type !== 'none'" t-esc="props.formatPrice(option.pricing_value)"/>
+                    </button>
+                </div>
+            </t>
+            <t t-elif="props.step.step_type === 'text'">
+                <input class="form-control" type="text" t-att-value="props.answer?.text_value || ''" t-on-input="(ev) => props.setTextAnswer(props.step.id, ev.target.value)"/>
+            </t>
+            <t t-elif="props.step.step_type === 'textarea'">
+                <textarea class="form-control" rows="5" t-att-value="props.answer?.text_value || ''" t-on-input="(ev) => props.setTextAnswer(props.step.id, ev.target.value)"></textarea>
+            </t>
+            <t t-elif="props.step.step_type === 'number'">
+                <input class="form-control" type="number" t-att-value="props.answer?.numeric_value || ''" t-on-input="(ev) => props.setNumberAnswer(props.step.id, ev.target.value)"/>
+            </t>
+            <t t-else="">
+                <div class="o_booking_info" t-esc="props.step.subtitle || props.step.title"/>
+            </t>
+        </section>
+    </t>
+
+    <t t-name="booking_flow_builder.ReviewScreen" owl="1">
+        <section class="o_booking_review">
+            <h2>Review your booking</h2>
+            <div class="o_booking_review_rows">
+                <t t-foreach="props.selectedAnswers" t-as="row" t-key="row.step.id">
+                    <div t-if="row.step.step_type !== 'review' and row.step.step_type !== 'info'" class="o_booking_review_row">
+                        <strong t-esc="row.step.title"/>
+                        <span t-esc="props.answerLabel(row.step, row.answer) || 'Not provided'"/>
+                    </div>
+                </t>
+            </div>
+            <div class="o_booking_customer">
+                <h3>Your details</h3>
+                <input class="form-control" type="text" placeholder="Name" t-att-value="props.customer.name" t-on-input="(ev) => props.setCustomer('name', ev.target.value)"/>
+                <input class="form-control" type="email" placeholder="Email" t-att-value="props.customer.email" t-on-input="(ev) => props.setCustomer('email', ev.target.value)"/>
+                <input class="form-control" type="tel" placeholder="Phone" t-att-value="props.customer.phone" t-on-input="(ev) => props.setCustomer('phone', ev.target.value)"/>
+                <textarea class="form-control" rows="4" placeholder="Notes or message" t-att-value="props.customer.note" t-on-input="(ev) => props.setCustomer('note', ev.target.value)"></textarea>
+            </div>
+        </section>
+    </t>
+
+    <t t-name="booking_flow_builder.PricingSummary" owl="1">
+        <aside class="o_booking_price">
+            <span>Total</span>
+            <strong t-esc="props.formatPrice(props.total)"/>
+        </aside>
+    </t>
+</templates>

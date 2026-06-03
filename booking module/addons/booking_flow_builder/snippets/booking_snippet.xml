@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="booking_flow_snippet" name="Booking Flow">
+        <section class="s_booking_flow pt48 pb48">
+            <div class="container">
+                <div class="text-center mb24">
+                    <h2>Booking Flow</h2>
+                    <p>Start your booking below.</p>
+                </div>
+                <div class="o_booking_flow_app" data-flow-slug="demo"></div>
+            </div>
+        </section>
+    </template>
+
+    <template id="booking_flow_snippet_option" inherit_id="website.snippets" name="Booking Flow Snippet">
+        <xpath expr="//snippets[@id='snippet_structure']" position="inside">
+            <t t-snippet="booking_flow_builder.booking_flow_snippet" string="Booking Flow" group="content">
+                <keywords>booking, appointment, reservation, flow, wizard, customer, service</keywords>
+            </t>
+        </xpath>
+    </template>
+</odoo>

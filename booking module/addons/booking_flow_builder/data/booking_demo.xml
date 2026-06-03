@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="booking_flow_demo" model="booking.flow">
+        <field name="name">Demo Booking</field>
+        <field name="slug">demo</field>
+        <field name="active" eval="True"/>
+        <field name="create_sale_order" eval="False"/>
+        <field name="create_appointment" eval="False"/>
+        <field name="currency_id" ref="base.USD"/>
+    </record>
+
+    <record id="booking_step_demo_service" model="booking.flow.step">
+        <field name="flow_id" ref="booking_flow_demo"/>
+        <field name="title">Choose a service</field>
+        <field name="subtitle">Pick the booking option that fits your visit.</field>
+        <field name="step_type">single_choice</field>
+        <field name="sequence">10</field>
+        <field name="required" eval="True"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="booking_option_demo_consultation" model="booking.flow.option">
+        <field name="step_id" ref="booking_step_demo_service"/>
+        <field name="label">Consultation</field>
+        <field name="sequence">10</field>
+        <field name="pricing_type">fixed</field>
+        <field name="pricing_value">50.0</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="booking_option_demo_standard" model="booking.flow.option">
+        <field name="step_id" ref="booking_step_demo_service"/>
+        <field name="label">Standard Booking</field>
+        <field name="sequence">20</field>
+        <field name="pricing_type">fixed</field>
+        <field name="pricing_value">100.0</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="booking_option_demo_premium" model="booking.flow.option">
+        <field name="step_id" ref="booking_step_demo_service"/>
+        <field name="label">Premium Booking</field>
+        <field name="sequence">30</field>
+        <field name="pricing_type">fixed</field>
+        <field name="pricing_value">180.0</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="booking_step_demo_notes" model="booking.flow.step">
+        <field name="flow_id" ref="booking_flow_demo"/>
+        <field name="title">Add a request</field>
+        <field name="subtitle">Tell us what you need help with.</field>
+        <field name="step_type">textarea</field>
+        <field name="sequence">20</field>
+        <field name="required" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="booking_step_demo_info" model="booking.flow.step">
+        <field name="flow_id" ref="booking_flow_demo"/>
+        <field name="title">Almost done</field>
+        <field name="subtitle">Review your selections and enter your contact details.</field>
+        <field name="step_type">review</field>
+        <field name="sequence">30</field>
+        <field name="required" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

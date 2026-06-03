@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Template for the list of blog posts -->
+    <template id="blog_post_list" name="Custom Blog Posts">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure">
+                    <section class="pt48 pb48">
+                        <div class="container">
+                            <h1 class="text-center mb-5">Our Blog</h1>
+                            <div class="row">
+                                <t t-foreach="posts" t-as="post">
+                                    <div class="col-md-6 col-lg-4 mb-4">
+                                        <div class="card h-100 shadow-sm">
+                                            <div t-if="post.image" class="card-img-top">
+                                                <img t-attf-src="/web/image/custom_blog.post/#{post.id}/image" class="img-fluid rounded-top" alt="Blog Image" style="object-fit: cover; max-height: 200px; width: 100%;"/>
+                                            </div>
+                                            <div class="card-body">
+                                                <h3 class="card-title">
+                                                    <a t-attf-href="/custom_blog/#{slug(post)}">
+                                                        <t t-esc="post.name"/>
+                                                    </a>
+                                                </h3>
+                                                <p class="card-text text-muted" t-if="post.content">
+                                                    <!-- Show a short snippet of content -->
+                                                    <t t-out="post.content[:150]" />...
+                                                </p>
+                                                <a t-attf-href="/custom_blog/#{slug(post)}" class="btn btn-primary mt-auto">Read More</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                                <div t-if="not posts" class="col-12 text-center text-muted">
+                                    <p>No blog posts found.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Template for a single blog post -->
+    <template id="blog_post_detail" name="Custom Blog Post Detail">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <section class="pt48 pb48">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="mb-4">
+                                    <a href="/custom_blog" class="btn btn-secondary btn-sm mb-3">
+                                        <i class="fa fa-arrow-left"/> Back to Blog
+                                    </a>
+                                    <h1 class="display-4"><t t-esc="post.name"/></h1>
+                                </div>
+                                
+                                <div class="blog-content clearfix">
+                                    <div t-if="post.image and (not post.image_position or post.image_position == 'top')" class="mb-4">
+                                        <img t-attf-src="/web/image/custom_blog.post/#{post.id}/image" class="img-fluid rounded shadow-sm" alt="Blog Image" style="max-height: 500px; width: 100%; object-fit: cover;"/>
+                                    </div>
+
+                                    <div t-if="post.image and post.image_position == 'left'" class="float-md-start me-md-4 mb-3" style="max-width: 50%;">
+                                        <img t-attf-src="/web/image/custom_blog.post/#{post.id}/image" class="img-fluid rounded shadow-sm" alt="Blog Image"/>
+                                    </div>
+
+                                    <div t-if="post.image and post.image_position == 'right'" class="float-md-end ms-md-4 mb-3" style="max-width: 50%;">
+                                        <img t-attf-src="/web/image/custom_blog.post/#{post.id}/image" class="img-fluid rounded shadow-sm" alt="Blog Image"/>
+                                    </div>
+
+                                    <!-- Render the rich text HTML content with website builder block support -->
+                                    <div t-field="post.content" class="oe_structure"/>
+
+                                    <div t-if="post.image and post.image_position == 'bottom'" class="mt-4">
+                                        <img t-attf-src="/web/image/custom_blog.post/#{post.id}/image" class="img-fluid rounded shadow-sm" alt="Blog Image" style="max-height: 500px; width: 100%; object-fit: cover;"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>

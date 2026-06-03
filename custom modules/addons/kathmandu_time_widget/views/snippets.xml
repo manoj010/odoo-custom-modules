@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- 1. Define the snippet's HTML structure -->
+    <template id="s_kathmandu_time" name="Kathmandu Time">
+        <section class="s_kathmandu_time pt32 pb32">
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-lg-6 text-center">
+                        <div class="card shadow border-0 rounded-3 bg-light">
+                            <div class="card-body py-4">
+                                <h3 class="mb-3 text-primary"><i class="fa fa-clock-o me-2"></i>Kathmandu Time</h3>
+                                <div class="display-4 fw-bold ktm-time-display text-dark">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <!-- 2. Add it to the website builder blocks menu -->
+    <template id="snippets" inherit_id="website.snippets" name="Custom Blog Snippets">
+        <xpath expr="//snippets[@id='snippet_structure']" position="inside">
+            <t t-snippet="kathmandu_time_widget.s_kathmandu_time" string="Kathmandu Time" group="content" t-thumbnail="/website/static/src/img/snippets_thumbs/s_text_block.svg"/>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_booking_flow_list" model="ir.ui.view">
+        <field name="name">booking.flow.list</field>
+        <field name="model">booking.flow</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="slug"/>
+                <field name="website_id"/>
+                <field name="currency_id"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_booking_flow_form" model="ir.ui.view">
+        <field name="name">booking.flow.form</field>
+        <field name="model">booking.flow</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="slug"/>
+                            <field name="website_id"/>
+                            <field name="currency_id"/>
+                        </group>
+                        <group>
+                            <field name="active"/>
+                            <field name="create_sale_order"/>
+                            <field name="create_appointment"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Steps">
+                            <field name="step_ids" context="{'default_flow_id': id}">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="title"/>
+                                    <field name="step_type"/>
+                                    <field name="required"/>
+                                    <field name="active"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_booking_flow" model="ir.actions.act_window">
+        <field name="name">Flows</field>
+        <field name="res_model">booking.flow</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

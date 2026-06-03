@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="kathmandu_time_widget.KathmanduTimeWidget">
+        <div class="o_systray_item d-flex align-items-center px-2">
+            <span class="fw-bold fs-6">
+                <i class="fa fa-clock-o me-1"></i> KTM: <t t-esc="state.time"/>
+            </span>
+        </div>
+    </t>
+</templates>

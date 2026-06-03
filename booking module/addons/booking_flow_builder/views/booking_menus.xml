@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_booking_root" name="Booking Flows" sequence="35"/>
+    <menuitem id="menu_booking_configuration" name="Configuration" parent="menu_booking_root" sequence="10"/>
+    <menuitem id="menu_booking_flows" name="Flows" parent="menu_booking_configuration" action="action_booking_flow" sequence="10"/>
+    <menuitem id="menu_booking_sessions" name="Sessions" parent="menu_booking_root" sequence="20"/>
+    <menuitem id="menu_booking_all_sessions" name="All Sessions" parent="menu_booking_sessions" action="action_booking_session" sequence="10"/>
+</odoo>
