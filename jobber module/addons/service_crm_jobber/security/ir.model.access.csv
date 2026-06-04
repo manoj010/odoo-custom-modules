@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_service_request_user,service.request user,model_service_request,base.group_user,1,1,1,1
+access_service_quote_user,service.quote user,model_service_quote,base.group_user,1,1,1,1
+access_service_quote_line_user,service.quote.line user,model_service_quote_line,base.group_user,1,1,1,1
+access_service_job_user,service.job user,model_service_job,base.group_user,1,1,1,1
+access_service_job_line_user,service.job.line user,model_service_job_line,base.group_user,1,1,1,1
+access_service_invoice_user,service.invoice user,model_service_invoice,base.group_user,1,1,1,1
+access_service_invoice_line_user,service.invoice.line user,model_service_invoice_line,base.group_user,1,1,1,1
+access_service_dashboard_user,service.dashboard user,model_service_dashboard,base.group_user,1,0,0,0

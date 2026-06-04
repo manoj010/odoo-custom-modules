@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_service_dashboard_form" model="ir.ui.view">
+        <field name="name">service.dashboard.form</field>
+        <field name="model">service.dashboard</field>
+        <field name="arch" type="xml">
+            <form create="0" edit="0" delete="0" class="o_service_crm_dashboard">
+                <sheet>
+                    <div class="o_service_crm_dashboard_header">
+                        <h1>Good day, <field name="name" invisible="1"/>Service Team</h1>
+                        <p>Track requests, quotes, jobs, invoices, and business performance in one place.</p>
+                    </div>
+                    <group>
+                        <field name="currency_id" invisible="1"/>
+                    </group>
+                    <div class="o_service_crm_dashboard_section">
+                        <h2>Workflow</h2>
+                        <div class="o_service_crm_dashboard_grid">
+                            <div class="o_service_crm_metric_card o_service_crm_card_request">
+                                <span>New Requests</span>
+                                <strong><field name="new_requests_count"/></strong>
+                            </div>
+                            <div class="o_service_crm_metric_card o_service_crm_card_quote">
+                                <span>Approved Quotes</span>
+                                <strong><field name="approved_quotes_count"/></strong>
+                            </div>
+                            <div class="o_service_crm_metric_card o_service_crm_card_job">
+                                <span>Requires Invoicing</span>
+                                <strong><field name="jobs_requiring_invoicing_count"/></strong>
+                            </div>
+                            <div class="o_service_crm_metric_card o_service_crm_card_invoice">
+                                <span>Awaiting Payment</span>
+                                <strong><field name="invoices_awaiting_payment_count"/></strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="o_service_crm_dashboard_section">
+                        <h2>Business Performance</h2>
+                        <div class="o_service_crm_dashboard_grid">
+                            <div class="o_service_crm_metric_card">
+                                <span>Past Due Amount</span>
+                                <strong><field name="past_due_invoices_amount" widget="monetary"/></strong>
+                            </div>
+                            <div class="o_service_crm_metric_card">
+                                <span>Upcoming Jobs</span>
+                                <strong><field name="upcoming_jobs_amount" widget="monetary"/></strong>
+                            </div>
+                            <div class="o_service_crm_metric_card">
+                                <span>Revenue This Month</span>
+                                <strong><field name="revenue_this_month" widget="monetary"/></strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="o_service_crm_alerts">
+                        <h2>Alerts</h2>
+                        <p>Review late jobs, past due invoices, and requests waiting for assessment.</p>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_service_dashboard" model="ir.actions.act_window">
+        <field name="name">Home</field>
+        <field name="res_model">service.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="res_id" ref="service_dashboard_singleton"/>
+        <field name="target">current</field>
+    </record>
+</odoo>

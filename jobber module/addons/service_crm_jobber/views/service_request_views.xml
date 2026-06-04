@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_service_request_list" model="ir.ui.view">
+        <field name="name">service.request.list</field>
+        <field name="model">service.request</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="status == 'lost'" decoration-success="status == 'converted'">
+                <field name="partner_id" string="Customer"/>
+                <field name="name" string="Title"/>
+                <field name="service_type"/>
+                <field name="property_address"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="requested_date"/>
+                <field name="status" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_service_request_form" model="ir.ui.view">
+        <field name="name">service.request.form</field>
+        <field name="model">service.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_convert_to_client" type="object" string="Convert to Client" class="btn-primary" invisible="partner_id"/>
+                    <button name="action_create_quote" type="object" string="Create Quote" class="btn-primary" invisible="status in ['quoted', 'converted', 'lost']"/>
+                    <button name="action_mark_lost" type="object" string="Mark Lost" invisible="status == 'lost'"/>
+                    <field name="status" widget="statusbar" statusbar_visible="new,assessment_complete,quoted,converted,lost"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                        <h2><field name="sequence" readonly="1"/></h2>
+                    </div>
+                    <group>
+                        <group string="Client">
+                            <field name="partner_id"/>
+                            <field name="customer_name"/>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="company_name"/>
+                            <field name="salesperson_id"/>
+                        </group>
+                        <group string="Request">
+                            <field name="service_type"/>
+                            <field name="requested_date"/>
+                            <field name="source"/>
+                            <field name="quote_id" readonly="1"/>
+                            <field name="job_id" readonly="1"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="property_address" placeholder="Service location"/>
+                        <field name="message" placeholder="Message or special instructions"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_service_request_kanban" model="ir.ui.view">
+        <field name="name">service.request.kanban</field>
+        <field name="model">service.request</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status" class="o_service_crm_kanban">
+                <field name="name"/>
+                <field name="sequence"/>
+                <field name="partner_id"/>
+                <field name="customer_name"/>
+                <field name="service_type"/>
+                <field name="requested_date"/>
+                <field name="status"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click o_service_crm_card o_service_crm_card_request">
+                            <div class="o_service_crm_card_top">
+                                <strong><field name="sequence"/></strong>
+                                <span class="o_service_crm_badge"><field name="status"/></span>
+                            </div>
+                            <div class="o_service_crm_card_title"><field name="name"/></div>
+                            <div class="text-muted"><field name="partner_id"/><field name="customer_name"/></div>
+                            <div><field name="service_type"/></div>
+                            <small><field name="requested_date"/></small>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_service_request" model="ir.actions.act_window">
+        <field name="name">Requests</field>
+        <field name="res_model">service.request</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{'default_source': 'manual'}</field>
+    </record>
+</odoo>

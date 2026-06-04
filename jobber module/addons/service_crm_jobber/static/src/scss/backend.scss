@@ -1,0 +1,151 @@
+.o_web_client {
+    --service-crm-navy: #002b3a;
+    --service-crm-bg: #f8f8f6;
+    --service-crm-sidebar: #efeee9;
+    --service-crm-card: #fff;
+    --service-crm-border: #dde3e5;
+    --service-crm-muted: #6b7c83;
+    --service-crm-green: #2f8a22;
+}
+
+.o_service_crm_dashboard {
+    .o_form_sheet_bg {
+        background: var(--service-crm-bg);
+    }
+
+    .o_form_sheet {
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+        max-width: 1180px;
+    }
+}
+
+.o_service_crm_dashboard_header {
+    margin-bottom: 28px;
+
+    h1 {
+        color: var(--service-crm-navy);
+        font-size: 32px;
+        font-weight: 800;
+        margin: 0 0 8px;
+    }
+
+    p {
+        color: var(--service-crm-muted);
+        margin: 0;
+    }
+}
+
+.o_service_crm_dashboard_section {
+    margin-bottom: 28px;
+
+    h2 {
+        color: var(--service-crm-navy);
+        font-size: 18px;
+        font-weight: 800;
+        margin: 0 0 14px;
+    }
+}
+
+.o_service_crm_dashboard_grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
+
+.o_service_crm_metric_card,
+.o_service_crm_card {
+    background: var(--service-crm-card);
+    border: 1px solid var(--service-crm-border);
+    border-radius: 12px;
+    color: var(--service-crm-navy);
+}
+
+.o_service_crm_metric_card {
+    border-left: 5px solid var(--service-crm-green);
+    padding: 20px;
+
+    span {
+        color: var(--service-crm-muted);
+        display: block;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    strong {
+        font-size: 30px;
+        line-height: 1;
+    }
+}
+
+.o_service_crm_alerts {
+    background: #fff;
+    border: 1px solid var(--service-crm-border);
+    border-radius: 12px;
+    padding: 20px;
+
+    h2 {
+        color: var(--service-crm-navy);
+        font-size: 18px;
+        margin-top: 0;
+    }
+
+    p {
+        color: var(--service-crm-muted);
+        margin-bottom: 0;
+    }
+}
+
+.o_service_crm_kanban {
+    background: var(--service-crm-bg);
+}
+
+.o_service_crm_card {
+    border-left: 5px solid var(--service-crm-green);
+    padding: 14px;
+}
+
+.o_service_crm_card_top {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.o_service_crm_card_title {
+    color: var(--service-crm-navy);
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.o_service_crm_badge {
+    background: #d9ecfa;
+    border-radius: 999px;
+    color: var(--service-crm-navy);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 8px;
+}
+
+.o_service_crm_card_request {
+    border-left-color: #b96b12;
+}
+
+.o_service_crm_card_quote {
+    border-left-color: #9b234e;
+}
+
+.o_service_crm_card_job {
+    border-left-color: #2f8a22;
+}
+
+.o_service_crm_card_invoice {
+    border-left-color: #1f5f8b;
+}
+
+.btn-primary {
+    background-color: #2f8a22;
+    border-color: #2f8a22;
+}

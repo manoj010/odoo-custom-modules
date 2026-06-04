@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="80" viewBox="0 0 120 80" role="img" aria-label="Service request form">
+  <rect width="120" height="80" fill="#F8F8F6"/>
+  <rect x="16" y="12" width="88" height="56" rx="8" fill="#FFFFFF" stroke="#DDE3E5"/>
+  <rect x="28" y="24" width="28" height="8" rx="2" fill="#DDE3E5"/>
+  <rect x="28" y="38" width="64" height="8" rx="2" fill="#DDE3E5"/>
+  <rect x="28" y="52" width="36" height="8" rx="4" fill="#2F8A22"/>
+</svg>

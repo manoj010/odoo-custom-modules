@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="seq_service_request" model="ir.sequence">
+        <field name="name">Service Request</field>
+        <field name="code">service.request</field>
+        <field name="prefix">REQ</field>
+        <field name="padding">4</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <record id="seq_service_quote" model="ir.sequence">
+        <field name="name">Service Quote</field>
+        <field name="code">service.quote</field>
+        <field name="prefix">QUO</field>
+        <field name="padding">4</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <record id="seq_service_job" model="ir.sequence">
+        <field name="name">Service Job</field>
+        <field name="code">service.job</field>
+        <field name="prefix">JOB</field>
+        <field name="padding">4</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <record id="seq_service_invoice" model="ir.sequence">
+        <field name="name">Service Invoice</field>
+        <field name="code">service.invoice</field>
+        <field name="prefix">INV</field>
+        <field name="padding">4</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+
+    <record id="service_dashboard_singleton" model="service.dashboard">
+        <field name="name">Service CRM Dashboard</field>
+    </record>
+</odoo>

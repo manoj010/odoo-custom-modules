@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="service_crm_snippets" inherit_id="website.snippets" name="Service CRM Snippets">
+        <xpath expr="//snippets[@id='snippet_groups']/t[@id='installed_snippets_hook']" position="before">
+            <t snippet-group="service_crm" t-snippet="website.s_snippet_group" string="Service CRM"
+               t-thumbnail="/service_crm_jobber/static/src/img/service_request_thumbnail.svg"/>
+        </xpath>
+        <xpath expr="//snippets[@id='snippet_structure']" position="inside">
+            <t t-snippet="service_crm_jobber.service_request_form"
+               string="Service Request Form"
+               group="service_crm"
+               t-thumbnail="/service_crm_jobber/static/src/img/service_request_thumbnail.svg">
+                <keywords>service, request, quote, job, crm, booking, estimate, contact, form</keywords>
+            </t>
+        </xpath>
+    </template>
+</odoo>

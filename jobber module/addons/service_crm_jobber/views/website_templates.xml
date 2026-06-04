@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="service_request_form" name="Service Request Form">
+        <section class="s_service_request_form o_service_crm_request_snippet">
+            <div class="container">
+                <div class="o_service_crm_request_card">
+                    <div class="o_service_crm_request_header">
+                        <span>Service CRM</span>
+                        <h2>Request service</h2>
+                        <p>Tell us what you need and where the work should happen.</p>
+                    </div>
+                    <form action="/service-crm/request/submit" method="post" class="o_service_crm_request_form">
+                        <div class="o_service_crm_form_grid">
+                            <div class="o_service_crm_field">
+                                <label for="service_full_name">Full Name *</label>
+                                <input id="service_full_name" type="text" name="full_name" required="required"/>
+                            </div>
+                            <div class="o_service_crm_field">
+                                <label for="service_email">Email *</label>
+                                <input id="service_email" type="email" name="email" required="required"/>
+                            </div>
+                            <div class="o_service_crm_field">
+                                <label for="service_phone">Phone</label>
+                                <input id="service_phone" type="tel" name="phone"/>
+                            </div>
+                            <div class="o_service_crm_field">
+                                <label for="service_company">Company</label>
+                                <input id="service_company" type="text" name="company_name"/>
+                            </div>
+                            <div class="o_service_crm_field o_service_crm_field_full">
+                                <label for="service_type">Service Type</label>
+                                <select id="service_type" name="service_type">
+                                    <option value="cleaning">Cleaning</option>
+                                    <option value="lawn_care">Lawn Care</option>
+                                    <option value="plumbing">Plumbing</option>
+                                    <option value="electrical">Electrical</option>
+                                    <option value="hvac">HVAC</option>
+                                    <option value="maintenance">Maintenance</option>
+                                    <option value="other" selected="selected">Other</option>
+                                </select>
+                            </div>
+                            <div class="o_service_crm_field o_service_crm_field_full">
+                                <label for="service_property_address">Property Address</label>
+                                <textarea id="service_property_address" name="property_address" rows="3"></textarea>
+                            </div>
+                            <div class="o_service_crm_field o_service_crm_field_full">
+                                <label for="service_message">Message / Special Instructions *</label>
+                                <textarea id="service_message" name="message" rows="5" required="required"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary o_service_crm_submit">Submit Request</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="service_request_thank_you" name="Service Request Thank You">
+        <t t-call="website.layout">
+            <section class="o_service_crm_request_thanks">
+                <div class="container">
+                    <div class="o_service_crm_request_card">
+                        <t t-if="has_error">
+                            <span>Almost there</span>
+                            <h1>Please complete the required fields.</h1>
+                            <p>Your name, email, and message are required before we can create the request.</p>
+                            <a href="/" class="btn btn-primary">Return to site</a>
+                        </t>
+                        <t t-else="">
+                            <span>Request received</span>
+                            <h1>Thank you.</h1>
+                            <p>Your service request has been sent to the team. We will review it and follow up soon.</p>
+                            <a href="/" class="btn btn-primary">Return to site</a>
+                        </t>
+                    </div>
+                </div>
+            </section>
+        </t>
+    </template>
+</odoo>

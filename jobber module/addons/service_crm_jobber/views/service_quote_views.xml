@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_service_quote_list" model="ir.ui.view">
+        <field name="name">service.quote.list</field>
+        <field name="model">service.quote</field>
+        <field name="arch" type="xml">
+            <list decoration-success="status in ['approved', 'converted']" decoration-muted="status == 'rejected'">
+                <field name="partner_id" string="Client"/>
+                <field name="sequence" string="Quote Number"/>
+                <field name="property_address" string="Property"/>
+                <field name="quote_date" string="Created Date"/>
+                <field name="status" widget="badge"/>
+                <field name="total_amount" widget="monetary"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_service_quote_form" model="ir.ui.view">
+        <field name="name">service.quote.form</field>
+        <field name="model">service.quote</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_send" type="object" string="Send" class="btn-primary" invisible="status != 'draft'"/>
+                    <button name="action_approve" type="object" string="Approve" class="btn-primary" invisible="status in ['approved', 'converted', 'rejected']"/>
+                    <button name="action_convert_to_job" type="object" string="Convert to Job" class="btn-primary" invisible="status != 'approved'"/>
+                    <button name="action_reject" type="object" string="Reject" invisible="status in ['converted', 'rejected']"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,awaiting_response,approved,converted,rejected"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="sequence" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="request_id"/>
+                            <field name="salesperson_id"/>
+                        </group>
+                        <group>
+                            <field name="quote_date"/>
+                            <field name="valid_until"/>
+                            <field name="currency_id"/>
+                        </group>
+                    </group>
+                    <field name="property_address"/>
+                    <notebook>
+                        <page string="Lines">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="product_name"/>
+                                    <field name="description"/>
+                                    <field name="quantity"/>
+                                    <field name="unit_price"/>
+                                    <field name="subtotal" readonly="1"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer">
+                                <field name="subtotal" readonly="1"/>
+                                <field name="tax_amount" readonly="1"/>
+                                <field name="total_amount" readonly="1"/>
+                            </group>
+                        </page>
+                        <page string="Notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_service_quote_kanban" model="ir.ui.view">
+        <field name="name">service.quote.kanban</field>
+        <field name="model">service.quote</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="status" class="o_service_crm_kanban">
+                <field name="sequence"/>
+                <field name="partner_id"/>
+                <field name="total_amount"/>
+                <field name="currency_id"/>
+                <field name="status"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click o_service_crm_card o_service_crm_card_quote">
+                            <div class="o_service_crm_card_top">
+                                <strong><field name="sequence"/></strong>
+                                <span class="o_service_crm_badge"><field name="status"/></span>
+                            </div>
+                            <div class="o_service_crm_card_title"><field name="partner_id"/></div>
+                            <div><field name="total_amount" widget="monetary"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_service_quote" model="ir.actions.act_window">
+        <field name="name">Quotes</field>
+        <field name="res_model">service.quote</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+</odoo>

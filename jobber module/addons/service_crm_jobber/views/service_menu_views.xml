@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_service_clients" model="ir.actions.act_window">
+        <field name="name">Clients</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('customer_rank', '&gt;', 0)]</field>
+        <field name="context">{'default_customer_rank': 1}</field>
+    </record>
+
+    <record id="action_service_schedule" model="ir.actions.act_window">
+        <field name="name">Schedule</field>
+        <field name="res_model">service.job</field>
+        <field name="view_mode">calendar,kanban,list,form</field>
+    </record>
+
+    <menuitem id="menu_service_crm_root" name="Service CRM" sequence="20"/>
+    <menuitem id="menu_service_crm_home" name="Home" parent="menu_service_crm_root" action="action_service_dashboard" sequence="1"/>
+    <menuitem id="menu_service_crm_clients" name="Clients" parent="menu_service_crm_root" action="action_service_clients" sequence="5"/>
+    <menuitem id="menu_service_crm_requests" name="Requests" parent="menu_service_crm_root" action="action_service_request" sequence="10"/>
+    <menuitem id="menu_service_crm_quotes" name="Quotes" parent="menu_service_crm_root" action="action_service_quote" sequence="20"/>
+    <menuitem id="menu_service_crm_jobs" name="Jobs" parent="menu_service_crm_root" action="action_service_job" sequence="30"/>
+    <menuitem id="menu_service_crm_invoices" name="Invoices" parent="menu_service_crm_root" action="action_service_invoice" sequence="40"/>
+    <menuitem id="menu_service_crm_schedule" name="Schedule" parent="menu_service_crm_root" action="action_service_schedule" sequence="50"/>
+    <menuitem id="menu_service_crm_insights" name="Insights" parent="menu_service_crm_root" action="action_service_dashboard" sequence="60"/>
+    <menuitem id="menu_service_crm_configuration" name="Configuration" parent="menu_service_crm_root" sequence="90"/>
+</odoo>
