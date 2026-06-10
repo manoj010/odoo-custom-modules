@@ -15,6 +15,31 @@ class CleaningBookingService(models.Model):
     sequence = fields.Integer(default=10)
 
 
+class CleaningBookingAvailability(models.Model):
+    _name = "cleaning.booking.availability"
+    _description = "Cleaning Booking Availability"
+    _order = "service_id, weekday, start_time"
+
+    service_id = fields.Many2one("cleaning.booking.service", required=True, ondelete="cascade")
+    weekday = fields.Selection(
+        [
+            ("0", "Monday"),
+            ("1", "Tuesday"),
+            ("2", "Wednesday"),
+            ("3", "Thursday"),
+            ("4", "Friday"),
+            ("5", "Saturday"),
+            ("6", "Sunday"),
+        ],
+        required=True,
+        default="0",
+    )
+    start_time = fields.Float(required=True, default=9.0)
+    end_time = fields.Float(required=True, default=18.0)
+    slot_interval_minutes = fields.Integer(default=60, required=True)
+    active = fields.Boolean(default=True)
+
+
 class CleaningBooking(models.Model):
     _name = "cleaning.booking"
     _description = "Cleaning Booking"

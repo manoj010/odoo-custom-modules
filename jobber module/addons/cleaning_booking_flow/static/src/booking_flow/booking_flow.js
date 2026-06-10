@@ -4,44 +4,62 @@ import { Component, onWillStart, useState } from "@odoo/owl";
 import { mountComponent } from "@web/env";
 import { rpc } from "@web/core/network/rpc";
 
-const MONTH_DAYS = [
-    ["Sun", "01", "2026-05-01"],
-    ["Mon", "02", "2026-05-02"],
-    ["Tue", "03", "2026-05-03"],
-    ["Wed", "04", "2026-05-04"],
-    ["Thu", "05", "2026-05-05"],
-    ["Fri", "06", "2026-05-06"],
-    ["Sat", "07", "2026-05-07"],
-    ["Sun", "08", "2026-05-08"],
-    ["Mon", "09", "2026-05-09"],
-    ["Tue", "10", "2026-05-10"],
-    ["Wed", "11", "2026-05-11"],
-    ["Thu", "12", "2026-05-12"],
-    ["Fri", "13", "2026-05-13"],
-    ["Sat", "14", "2026-05-14"],
-    ["Sun", "15", "2026-05-15"],
-    ["Mon", "16", "2026-05-16"],
-    ["Tue", "17", "2026-05-17"],
-    ["Wed", "18", "2026-05-18"],
-    ["Thu", "19", "2026-05-19"],
-    ["Fri", "20", "2026-05-20"],
-    ["Sat", "21", "2026-05-21"],
-    ["Sun", "22", "2026-05-22"],
-    ["Mon", "23", "2026-05-23"],
-    ["Tue", "24", "2026-05-24"],
-    ["Wed", "25", "2026-05-25"],
-    ["Thu", "26", "2026-05-26"],
-    ["Fri", "27", "2026-05-27"],
-    ["Sat", "28", "2026-05-28"],
-    ["Sun", "29", "2026-05-29"],
-    ["Mon", "30", "2026-05-30"],
-    ["Tue", "31", "2026-05-31"],
-    ["Wed", "01", "2026-06-01", true],
-    ["Thu", "02", "2026-06-02", true],
-    ["Fri", "03", "2026-06-03", true],
+const MONTH_NAMES = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
 ];
 
-const TIMES = ["09:00 AM", "12:00 PM", "02:00 PM", "04:00 PM", "06:00 PM", "08:00 PM"];
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, "0");
+    const day = `${date.getDate()}`.padStart(2, "0");
+    return `${year}-${month}-${day}`;
+}
+
+function parseDate(value) {
+    const [year, month, day] = value.split("-").map((part) => parseInt(part, 10));
+    return new Date(year, month - 1, day);
+}
+
+function formatDateLabel(value) {
+    const date = parseDate(value);
+    return `${date.getDate()} ${MONTH_NAMES[date.getMonth()].toUpperCase()}, ${date.getFullYear()}`;
+}
+
+function startOfToday() {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+}
+
+function buildMonthDays(year, month) {
+    const today = startOfToday();
+    const first = new Date(year, month, 1);
+    const firstGridDate = new Date(year, month, 1 - first.getDay());
+    const days = [];
+    for (let index = 0; index < 42; index++) {
+        const date = new Date(firstGridDate);
+        date.setDate(firstGridDate.getDate() + index);
+        days.push({
+            key: formatDate(date),
+            label: `${date.getDate()}`.padStart(2, "0"),
+            value: formatDate(date),
+            isMuted: date.getMonth() !== month,
+            isPast: date < today,
+            isWeekend: date.getDay() === 0 || date.getDay() === 6,
+        });
+    }
+    return days;
+}
 
 class Summary extends Component {
     static template = "cleaning_booking_flow.Summary";
@@ -75,11 +93,13 @@ export class CleaningBookingFlow extends Component {
             paymentMethod: "pay_later",
             bookingId: null,
             loading: false,
+            loadingSlots: false,
             error: null,
+            currentYear: new Date().getFullYear(),
+            currentMonth: new Date().getMonth(),
+            times: [],
         });
-        this.days = MONTH_DAYS;
         this.weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-        this.times = TIMES;
         window.cleaningBookingFlow = this;
 
         onWillStart(async () => {
@@ -113,6 +133,22 @@ export class CleaningBookingFlow extends Component {
         ][this.state.step];
     }
 
+    get days() {
+        return buildMonthDays(this.state.currentYear, this.state.currentMonth);
+    }
+
+    get currentMonthName() {
+        return MONTH_NAMES[this.state.currentMonth].toUpperCase();
+    }
+
+    get canGoToPreviousMonth() {
+        const today = startOfToday();
+        return (
+            this.state.currentYear > today.getFullYear() ||
+            (this.state.currentYear === today.getFullYear() && this.state.currentMonth > today.getMonth())
+        );
+    }
+
     async fetchServices() {
         try {
             const services = await rpc("/cleaning-booking/services", {});
@@ -142,6 +178,9 @@ export class CleaningBookingFlow extends Component {
         this.state.selectedDate = null;
         this.state.selectedDateLabel = "";
         this.state.selectedTime = null;
+        this.state.times = [];
+        this.state.currentYear = new Date().getFullYear();
+        this.state.currentMonth = new Date().getMonth();
         this.state.customer.name = "";
         this.state.customer.email = "";
         this.state.customer.phone = "";
@@ -200,18 +239,74 @@ export class CleaningBookingFlow extends Component {
 
     selectService(service) {
         this.state.selectedService = service;
+        this.state.selectedDate = null;
+        this.state.selectedDateLabel = "";
+        this.state.selectedTime = null;
+        this.state.times = [];
         this.state.error = null;
     }
 
-    selectDate(day) {
-        this.state.selectedDate = day[2];
-        this.state.selectedDateLabel = `${day[1]} MAY, 2026`;
+    async selectDate(day) {
+        if (day.isPast) {
+            return;
+        }
+        this.state.selectedDate = day.value;
+        this.state.selectedDateLabel = formatDateLabel(day.value);
+        this.state.selectedTime = null;
         this.state.error = null;
+        await this.fetchAvailability();
     }
 
     selectTime(time) {
         this.state.selectedTime = time;
         this.state.error = null;
+    }
+
+    goToPreviousMonth() {
+        if (!this.canGoToPreviousMonth) {
+            return;
+        }
+        this.changeMonth(-1);
+    }
+
+    goToNextMonth() {
+        this.changeMonth(1);
+    }
+
+    changeMonth(delta) {
+        const date = new Date(this.state.currentYear, this.state.currentMonth + delta, 1);
+        this.state.currentYear = date.getFullYear();
+        this.state.currentMonth = date.getMonth();
+        this.state.selectedDate = null;
+        this.state.selectedDateLabel = "";
+        this.state.selectedTime = null;
+        this.state.times = [];
+        this.state.error = null;
+    }
+
+    async fetchAvailability() {
+        if (!this.state.selectedService || !this.state.selectedDate) {
+            this.state.times = [];
+            return;
+        }
+        this.state.loadingSlots = true;
+        try {
+            const result = await rpc("/cleaning-booking/availability", {
+                service_id: this.state.selectedService.id,
+                date: this.state.selectedDate,
+            });
+            this.state.times = result.slots || [];
+            if (!result.success) {
+                this.state.error = result.message || "No times are available for this date.";
+            } else if (!this.state.times.length) {
+                this.state.error = "No times are available for this date.";
+            }
+        } catch {
+            this.state.times = [];
+            this.state.error = "We could not load available times. Please try again.";
+        } finally {
+            this.state.loadingSlots = false;
+        }
     }
 
     updateCustomer(field, ev) {

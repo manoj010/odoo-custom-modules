@@ -42,12 +42,66 @@
         <field name="name">Service Options</field>
         <field name="res_model">cleaning.booking.service</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'active_test': False}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create the cleaning services customers can choose from.
             </p>
             <p>
                 These options appear dynamically in the website booking flow. You can edit, archive, reorder, or delete them.
+            </p>
+        </field>
+    </record>
+
+    <record id="cleaning_booking_availability_view_tree" model="ir.ui.view">
+        <field name="name">cleaning.booking.availability.list</field>
+        <field name="model">cleaning.booking.availability</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="service_id"/>
+                <field name="weekday"/>
+                <field name="start_time" widget="float_time"/>
+                <field name="end_time" widget="float_time"/>
+                <field name="slot_interval_minutes"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="cleaning_booking_availability_view_form" model="ir.ui.view">
+        <field name="name">cleaning.booking.availability.form</field>
+        <field name="model">cleaning.booking.availability</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="service_id"/>
+                            <field name="weekday"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="start_time" widget="float_time"/>
+                            <field name="end_time" widget="float_time"/>
+                            <field name="slot_interval_minutes"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cleaning_booking_availability_action" model="ir.actions.act_window">
+        <field name="name">Availability</field>
+        <field name="res_model">cleaning.booking.availability</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'active_test': False}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add weekly availability for each cleaning service.
+            </p>
+            <p>
+                The website calendar uses these rules to show available time slots and hides times already booked.
             </p>
         </field>
     </record>
@@ -113,4 +167,5 @@
     <menuitem id="cleaning_booking_menu_root" name="Cleaning Booking" sequence="30"/>
     <menuitem id="cleaning_booking_menu_bookings" name="Bookings" parent="cleaning_booking_menu_root" action="cleaning_booking_action" sequence="10"/>
     <menuitem id="cleaning_booking_menu_services" name="Service Options" parent="cleaning_booking_menu_root" action="cleaning_booking_service_action" sequence="20"/>
+    <menuitem id="cleaning_booking_menu_availability" name="Availability" parent="cleaning_booking_menu_root" action="cleaning_booking_availability_action" sequence="30"/>
 </odoo>

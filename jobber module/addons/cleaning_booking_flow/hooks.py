@@ -54,3 +54,22 @@ def post_init_hook(env):
     Service = env["cleaning.booking.service"].sudo()
     if not Service.search_count([]):
         Service.create(DEFAULT_SERVICES)
+
+    Availability = env["cleaning.booking.availability"].sudo()
+    if Availability.search_count([]):
+        return
+
+    rules = []
+    for service in Service.search([]):
+        for weekday in ["0", "1", "2", "3", "4", "5"]:
+            rules.append(
+                {
+                    "service_id": service.id,
+                    "weekday": weekday,
+                    "start_time": 9.0,
+                    "end_time": 18.0,
+                    "slot_interval_minutes": 60,
+                }
+            )
+    if rules:
+        Availability.create(rules)

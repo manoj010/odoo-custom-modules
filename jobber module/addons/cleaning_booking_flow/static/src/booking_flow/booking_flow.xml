@@ -5,7 +5,9 @@
             <div class="o_cleaning_booking_shell">
                 <header class="o_cleaning_booking_header">
                     <button type="button" class="o_cleaning_booking_close" t-on-click="close" aria-label="Close">x</button>
-                    <div class="o_cleaning_booking_logo">LOGO</div>
+                    <div class="o_cleaning_booking_logo">
+                        <img src="/cleaning_booking_flow/static/src/img/sparkle_cleaning_team_logo.png" alt="Sparkle Cleaning Team"/>
+                    </div>
                     <div class="o_cleaning_booking_progress">
                         <span t-att-style="'width: ' + progressWidth"/>
                     </div>
@@ -37,24 +39,30 @@
                             <div class="o_cleaning_calendar_head">
                                 <strong>CALENDAR</strong>
                                 <div>
-                                    <button type="button">2026</button>
-                                    <button type="button">JUNE</button>
+                                    <button type="button" t-on-click="goToPreviousMonth" t-att-disabled="!canGoToPreviousMonth"><i class="fa fa-chevron-left"/></button>
+                                    <button type="button" t-esc="state.currentYear"/>
+                                    <button type="button" t-esc="currentMonthName"/>
+                                    <button type="button" t-on-click="goToNextMonth"><i class="fa fa-chevron-right"/></button>
                                 </div>
                             </div>
                             <div class="o_cleaning_weekdays">
                                 <span t-foreach="weekdays" t-as="weekday" t-key="weekday" t-esc="weekday"/>
                             </div>
                             <div class="o_cleaning_days">
-                                <button t-foreach="days" t-as="day" t-key="day[2]"
+                                <button t-foreach="days" t-as="day" t-key="day.key"
                                         type="button"
-                                        t-att-class="(state.selectedDate === day[2] ? 'is-selected ' : '') + (day[3] ? 'is-muted ' : '') + ((day[0] === 'Sun' || day[0] === 'Sat') ? 'is-weekend' : '')"
+                                        t-att-disabled="day.isPast"
+                                        t-att-class="(state.selectedDate === day.value ? 'is-selected ' : '') + (day.isMuted ? 'is-muted ' : '') + (day.isWeekend ? 'is-weekend ' : '') + (day.isPast ? 'is-past' : '')"
                                         t-on-click="() => this.selectDate(day)"
-                                        t-esc="day[1]"/>
+                                        t-esc="day.label"/>
                             </div>
                         </div>
                         <div class="o_cleaning_times">
                             <strong>AVAILABLE TIME</strong>
-                            <button t-foreach="times" t-as="time" t-key="time"
+                            <p t-if="state.loadingSlots" class="o_cleaning_slot_note">Loading times...</p>
+                            <p t-elif="!state.selectedDate" class="o_cleaning_slot_note">Select a date first.</p>
+                            <p t-elif="!state.times.length" class="o_cleaning_slot_note">No times available.</p>
+                            <button t-foreach="state.times" t-as="time" t-key="time"
                                     type="button"
                                     t-att-class="state.selectedTime === time ? 'is-selected' : ''"
                                     t-on-click="() => this.selectTime(time)"
