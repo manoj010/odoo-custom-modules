@@ -126,6 +126,7 @@ export class CleaningBookingFlow extends Component {
     }
 
     open() {
+        this.fetchServices();
         this.state.isOpen = true;
         document.body.classList.add("o_cleaning_booking_locked");
     }
@@ -162,6 +163,10 @@ export class CleaningBookingFlow extends Component {
 
     async next() {
         this.state.error = null;
+        if (this.state.step === 5) {
+            window.location.href = "/";
+            return;
+        }
         if (!this.validateStep()) {
             return;
         }

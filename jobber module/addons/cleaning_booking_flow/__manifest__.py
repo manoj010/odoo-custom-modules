@@ -11,10 +11,10 @@
     ],
     "data": [
         "security/ir.model.access.csv",
-        "data/cleaning_booking_service_data.xml",
         "views/cleaning_booking_views.xml",
         "views/website_templates.xml",
     ],
+    "post_init_hook": "post_init_hook",
     "assets": {
         "web.assets_frontend": [
             "cleaning_booking_flow/static/src/booking_flow/booking_flow.scss",

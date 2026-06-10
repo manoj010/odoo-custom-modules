@@ -110,8 +110,9 @@
                     <button type="button" class="o_cleaning_back" t-on-click="back"><i class="fa fa-arrow-left"/> Go Back</button>
                     <div>
                         <button type="button" class="o_cleaning_reset" t-on-click="reset"><i class="fa fa-refresh"/> Reset</button>
-                        <button type="button" class="o_cleaning_continue" t-on-click="next" t-att-disabled="state.loading || state.step === 5">
+                        <button type="button" class="o_cleaning_continue" t-on-click="next" t-att-disabled="state.loading">
                             <t t-if="state.loading">Saving...</t>
+                            <t t-elif="state.step === 5">Finish <i class="fa fa-arrow-right"/></t>
                             <t t-else="">Continue <i class="fa fa-arrow-right"/></t>
                         </button>
                     </div>
