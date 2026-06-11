@@ -3,6 +3,7 @@
 import { Component, onWillStart, useState } from "@odoo/owl";
 import { mountComponent } from "@web/env";
 import { rpc } from "@web/core/network/rpc";
+import rootWidget from "root.widget";
 
 const MONTH_NAMES = [
     "January",
@@ -359,7 +360,21 @@ function wireBookingButtons() {
     });
 }
 
+function isWebsiteEditorActive() {
+    const searchParams = new URLSearchParams(window.location.search);
+    return (
+        window.self !== window.top ||
+        searchParams.has("enable_editor") ||
+        searchParams.has("edit_translations") ||
+        document.body.classList.contains("editor_enable") ||
+        document.documentElement.classList.contains("editor_enable")
+    );
+}
+
 async function startCleaningBookingFlow() {
+    if (isWebsiteEditorActive()) {
+        return;
+    }
     wireBookingButtons();
     let target = document.querySelector("#cleaning_booking_flow_mount");
     if (!target) {
@@ -371,7 +386,13 @@ async function startCleaningBookingFlow() {
         return;
     }
     target.dataset.cleaningBookingMounted = "1";
-    await mountComponent(CleaningBookingFlow, target);
+    try {
+        const publicRoot = await rootWidget;
+        await mountComponent(CleaningBookingFlow, target, { env: publicRoot.env });
+    } catch (error) {
+        delete target.dataset.cleaningBookingMounted;
+        throw error;
+    }
 }
 
 if (document.readyState === "loading") {
