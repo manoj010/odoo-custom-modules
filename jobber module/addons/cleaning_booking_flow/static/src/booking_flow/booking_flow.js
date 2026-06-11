@@ -347,13 +347,13 @@ function wireBookingButtons() {
         return;
     }
     document.body.dataset.cleaningBookingClickBound = "1";
-    document.addEventListener("click", (ev) => {
+    document.addEventListener("click", async (ev) => {
         const trigger = ev.target.closest(".js_open_cleaning_booking");
         if (!trigger) {
             return;
         }
         ev.preventDefault();
-        const flow = window.cleaningBookingFlow;
+        const flow = window.cleaningBookingFlow || (await mountCleaningBookingFlow());
         if (flow) {
             flow.open();
         }
@@ -363,36 +363,50 @@ function wireBookingButtons() {
 function isWebsiteEditorActive() {
     const searchParams = new URLSearchParams(window.location.search);
     return (
-        window.self !== window.top ||
         searchParams.has("enable_editor") ||
         searchParams.has("edit_translations") ||
         document.body.classList.contains("editor_enable") ||
-        document.documentElement.classList.contains("editor_enable")
+        document.documentElement.classList.contains("editor_enable") ||
+        document.querySelector("#wrapwrap[data-wysiwyg='1'], #wrapwrap[data-wysiwyg='true']")
     );
 }
 
-async function startCleaningBookingFlow() {
+async function mountCleaningBookingFlow() {
     if (isWebsiteEditorActive()) {
-        return;
+        return null;
     }
-    wireBookingButtons();
     let target = document.querySelector("#cleaning_booking_flow_mount");
     if (!target) {
         target = document.createElement("div");
         target.id = "cleaning_booking_flow_mount";
         document.body.appendChild(target);
     }
-    if (!target || target.dataset.cleaningBookingMounted) {
-        return;
+    if (!target) {
+        return null;
+    }
+    if (target.dataset.cleaningBookingMounted && window.cleaningBookingFlow) {
+        return window.cleaningBookingFlow;
+    }
+    if (target.dataset.cleaningBookingMounted && !window.cleaningBookingFlow) {
+        delete target.dataset.cleaningBookingMounted;
     }
     target.dataset.cleaningBookingMounted = "1";
     try {
         const publicRoot = await rootWidget;
         await mountComponent(CleaningBookingFlow, target, { env: publicRoot.env });
+        return window.cleaningBookingFlow;
     } catch (error) {
         delete target.dataset.cleaningBookingMounted;
         throw error;
     }
+}
+
+async function startCleaningBookingFlow() {
+    wireBookingButtons();
+    if (isWebsiteEditorActive()) {
+        return;
+    }
+    await mountCleaningBookingFlow();
 }
 
 if (document.readyState === "loading") {
