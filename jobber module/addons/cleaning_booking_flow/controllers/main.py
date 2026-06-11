@@ -4,27 +4,116 @@ from odoo import fields
 from odoo import http
 from odoo.http import request
 
-
 FALLBACK_TIMES = ["09:00 AM", "12:00 PM", "02:00 PM", "04:00 PM", "06:00 PM", "08:00 PM"]
-
 
 class CleaningBookingController(http.Controller):
     @http.route("/cleaning-booking/services", type="json", auth="public", website=True)
     def services(self):
-        services = request.env["cleaning.booking.service"].sudo().search(
-            [("active", "=", True)], order="sequence, id"
+        services = request.env["appointment.type"].sudo().search(
+            [("active", "=", True), ("is_cleaning_service", "=", True)],
+            order="sequence, id"
         )
         return [
             {
                 "id": service.id,
                 "name": service.name,
-                "description": service.description or "",
+                "description": service.description or "",  # or your custom field
                 "icon_class": service.icon_class or "fa fa-sparkles",
                 "price": service.price,
-                "duration_minutes": service.duration_minutes,
+                "duration_minutes": int(service.appointment_duration * 60),
             }
             for service in services
         ]
+
+
+#     @http.route("/cleaning-booking/services", type="json", auth="public", website=True)
+#     def services(self):
+#         services = request.env["cleaning.booking.service"].sudo().search(
+#             [("active", "=", True)], order="sequence, id"
+#         )
+#         return [
+#             {
+#                 "id": service.id,
+#                 "name": service.name,
+#                 "description": service.description or "",
+#                 "icon_class": service.icon_class or "fa fa-sparkles",
+#                 "price": service.price,
+#                 "duration_minutes": service.duration_minutes,
+#             }
+#             for service in services
+#         ]
+
+    # @http.route("/cleaning-booking/availability", type="json", auth="public", website=True)
+    # def availability(self, **payload):
+    #     service_id = int(payload.get("service_id") or 0)
+    #     booking_date = self._parse_booking_date(payload.get("date"))
+    #     if not service_id or not booking_date:
+    #         return {"success": False, "message": "Please choose a service and date.", "slots": []}
+
+    #     today = fields.Date.context_today(request.env.user)
+    #     if booking_date < today:
+    #         return {"success": False, "message": "Please choose today or a future date.", "slots": []}
+
+    #     service = request.env["appointment.type"].sudo().browse(service_id)
+    #     if not service.exists() or not service.active:
+    #         return {"success": False, "message": "Please choose an available service.", "slots": []}
+
+    #     slots = self._get_available_slots(service, booking_date)
+    #     return {"success": True, "slots": slots}
+
+    # @http.route(
+    #     "/cleaning-booking/create",
+    #     type="json",
+    #     auth="public",
+    #     website=True,
+    #     csrf=False,
+    # )
+    # def create_booking(self, **payload):
+    #     service_id = int(payload.get("service_id") or 0)
+    #     customer_name = (payload.get("customer_name") or "").strip()
+    #     email = (payload.get("email") or "").strip()
+    #     phone = (payload.get("phone") or "").strip()
+
+    #     if not service_id or not customer_name or not email or not phone:
+    #         return {
+    #             "success": False,
+    #             "message": "Please complete service, name, email, and phone.",
+    #         }
+
+    #     service = request.env["cleaning.booking.service"].sudo().browse(service_id)
+    #     if not service.exists() or not service.active:
+    #         return {"success": False, "message": "Please choose an available service."}
+
+    #     booking_date = self._parse_booking_date(payload.get("booking_date"))
+    #     booking_time = (payload.get("booking_time") or "").strip()
+    #     today = fields.Date.context_today(request.env.user)
+    #     if not booking_date or booking_date < today:
+    #         return {"success": False, "message": "Please choose today or a future date."}
+
+    #     available_slots = self._get_available_slots(service, booking_date)
+    #     if booking_time not in available_slots:
+    #         return {"success": False, "message": "Please choose an available time."}
+
+    #     booking = request.env["cleaning.booking"].sudo().create(
+    #         {
+    #             "service_id": service.id,
+    #             "customer_name": customer_name,
+    #             "email": email,
+    #             "phone": phone,
+    #             "location": (payload.get("location") or "").strip(),
+    #             "message": (payload.get("message") or "").strip(),
+    #             "booking_date": booking_date,
+    #             "booking_time": booking_time,
+    #             "price": float(payload.get("price") or service.price or 0.0),
+    #             "payment_status": "pending",
+    #             "state": "confirmed",
+    #         }
+    #     )
+    #     return {
+    #         "success": True,
+    #         "booking_id": booking.id,
+    #         "message": "Your cleaning service has been successfully booked.",
+    #     }
 
     @http.route("/cleaning-booking/availability", type="json", auth="public", website=True)
     def availability(self, **payload):
@@ -37,8 +126,8 @@ class CleaningBookingController(http.Controller):
         if booking_date < today:
             return {"success": False, "message": "Please choose today or a future date.", "slots": []}
 
-        service = request.env["cleaning.booking.service"].sudo().browse(service_id)
-        if not service.exists() or not service.active:
+        service = request.env["appointment.type"].sudo().browse(service_id)
+        if not service.exists() or not service.active or not service.is_cleaning_service:
             return {"success": False, "message": "Please choose an available service.", "slots": []}
 
         slots = self._get_available_slots(service, booking_date)
@@ -63,8 +152,8 @@ class CleaningBookingController(http.Controller):
                 "message": "Please complete service, name, email, and phone.",
             }
 
-        service = request.env["cleaning.booking.service"].sudo().browse(service_id)
-        if not service.exists() or not service.active:
+        service = request.env["appointment.type"].sudo().browse(service_id)
+        if not service.exists() or not service.active or not service.is_cleaning_service:
             return {"success": False, "message": "Please choose an available service."}
 
         booking_date = self._parse_booking_date(payload.get("booking_date"))

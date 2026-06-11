@@ -382,17 +382,11 @@ async function startCleaningBookingFlow() {
         target.id = "cleaning_booking_flow_mount";
         document.body.appendChild(target);
     }
-    if (!target || target.dataset.cleaningBookingMounted) {
+    if (target.dataset.cleaningBookingMounted) {
         return;
     }
     target.dataset.cleaningBookingMounted = "1";
-    try {
-        const publicRoot = await rootWidget;
-        await mountComponent(CleaningBookingFlow, target, { env: publicRoot.env });
-    } catch (error) {
-        delete target.dataset.cleaningBookingMounted;
-        throw error;
-    }
+    await mountComponent(CleaningBookingFlow, target);  // use mount instead of mountComponent
 }
 
 if (document.readyState === "loading") {

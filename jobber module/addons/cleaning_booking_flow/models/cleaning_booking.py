@@ -15,12 +15,25 @@ class CleaningBookingService(models.Model):
     sequence = fields.Integer(default=10)
 
 
+class AppointmentType(models.Model):
+    _inherit = "appointment.type"
+
+    description = fields.Text()
+    icon_class = fields.Char(default="fa fa-sparkles")
+    # 'name', 'sequence', 'active' already exist on appointment.type
+    # 'price' — add if not already on your module
+    price = fields.Float()
+    is_cleaning_service = fields.Boolean(default=True)
+
+
 class CleaningBookingAvailability(models.Model):
     _name = "cleaning.booking.availability"
     _description = "Cleaning Booking Availability"
     _order = "service_id, weekday, start_time"
 
-    service_id = fields.Many2one("cleaning.booking.service", required=True, ondelete="cascade")
+    # service_id = fields.Many2one("cleaning.booking.service", required=True, ondelete="cascade")
+    # In CleaningBookingAvailability
+    service_id = fields.Many2one("appointment.type", required=True, ondelete="cascade")
     weekday = fields.Selection(
         [
             ("0", "Monday"),
@@ -45,7 +58,8 @@ class CleaningBooking(models.Model):
     _description = "Cleaning Booking"
     _order = "create_date desc"
 
-    service_id = fields.Many2one("cleaning.booking.service", required=True)
+    # service_id = fields.Many2one("cleaning.booking.service", required=True)
+    service_id = fields.Many2one("appointment.type", required=True)
     customer_name = fields.Char(required=True)
     email = fields.Char(required=True)
     phone = fields.Char()
