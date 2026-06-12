@@ -1,13 +1,13 @@
-# Cleaning Booking Flow
+# Sparkle Booking Flow
 
 This Odoo 18 addon adds a full-screen website booking flow for cleaning services. It is independent from the existing Jobber/service CRM addon and can be installed alongside it.
 
 ## What It Adds
 
-- A website overlay booking flow opened by any button or link with the class `js_open_cleaning_booking`.
+- A website overlay booking flow opened by any button or link with the class `js_open_sparkle_booking`.
 - Admin-managed service options shown on the first booking step.
 - Admin-managed weekly availability rules used by the calendar step.
-- A backend app menu named `Cleaning Booking`.
+- A backend app menu named `Sparkle Booking`.
 - Two backend models:
 - `cleaning.booking.service` for service choices.
 - `cleaning.booking.availability` for service availability rules.
@@ -17,7 +17,7 @@ This Odoo 18 addon adds a full-screen website booking flow for cleaning services
 
 ## User Flow
 
-1. A visitor clicks a website button with `.js_open_cleaning_booking`.
+1. A visitor clicks a website button with `.js_open_sparkle_booking`.
 2. The overlay slides up over the current page.
 3. The visitor selects a service.
 4. The visitor selects today or a future date.
@@ -33,7 +33,7 @@ This Odoo 18 addon adds a full-screen website booking flow for cleaning services
 Use this on any website page:
 
 ```html
-<a href="#" class="btn btn-primary js_open_cleaning_booking">Book Now</a>
+<a href="#" class="btn btn-primary js_open_sparkle_booking">Book Now</a>
 ```
 
 The `href="#"` is fine because the frontend JavaScript prevents the default link action and opens the overlay.
@@ -41,7 +41,7 @@ The `href="#"` is fine because the frontend JavaScript prevents the default link
 If you are writing template code directly, a button is also valid:
 
 ```html
-<button type="button" class="btn btn-primary js_open_cleaning_booking">Book Now</button>
+<button type="button" class="btn btn-primary js_open_sparkle_booking">Book Now</button>
 ```
 
 ## Admin Service Options
@@ -49,7 +49,7 @@ If you are writing template code directly, a button is also valid:
 Go to:
 
 ```text
-Cleaning Booking -> Service Options
+Sparkle Booking -> Service Options
 ```
 
 Admins can create, edit, archive, reorder, or delete service options. Active services appear dynamically in the website booking flow.
@@ -69,7 +69,7 @@ Service fields:
 Go to:
 
 ```text
-Cleaning Booking -> Availability
+Sparkle Booking -> Availability
 ```
 
 Admins can create weekly availability rules for each service.
@@ -116,7 +116,7 @@ The defaults are created in `hooks.py` through `post_init_hook`. They are only c
 Submitted bookings are stored under:
 
 ```text
-Cleaning Booking -> Bookings
+Sparkle Booking -> Bookings
 ```
 
 The booking stores:
@@ -162,14 +162,14 @@ The frontend assets are loaded through `web.assets_frontend` in `__manifest__.py
 The module injects this container into `website.layout`:
 
 ```html
-<div id="cleaning_booking_flow_mount"></div>
+<div id="sparkle_booking_flow_mount"></div>
 ```
 
 The JavaScript also creates a fallback mount container if the layout container is not found.
 
 ## JSON Routes
 
-### `/cleaning-booking/services`
+### `/sparkle-booking/services`
 
 Type: JSON  
 Auth: public
@@ -191,7 +191,7 @@ Example response shape:
 ]
 ```
 
-### `/cleaning-booking/availability`
+### `/sparkle-booking/availability`
 
 Type: JSON  
 Auth: public
@@ -214,7 +214,7 @@ Returns available slots for that service/date and excludes already-booked times:
 }
 ```
 
-### `/cleaning-booking/create`
+### `/sparkle-booking/create`
 
 Type: JSON  
 Auth: public  
@@ -250,7 +250,7 @@ Creates a confirmed booking and returns:
 For this Docker setup, update the module with:
 
 ```powershell
-docker compose exec odoo odoo -c /etc/odoo/odoo.conf -d odoo-jobber_module-db -u cleaning_booking_flow --db_host=db --db_user=odoo --db_password=odoo --stop-after-init
+docker compose exec odoo odoo -c /etc/odoo/odoo.conf -d odoo-jobber_module-db -u sparkle_booking_flow --db_host=db --db_user=odoo --db_password=odoo --stop-after-init
 ```
 
 Then refresh the website page. If browser assets look stale, use a hard refresh.

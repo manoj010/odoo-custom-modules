@@ -1,5 +1,5 @@
 {
-    "name": "Cleaning Booking Flow",
+    "name": "Sparkle Booking Flow",
     "summary": "Full-screen website booking flow for cleaning services",
     "version": "18.0.1.0.0",
     "category": "Website",

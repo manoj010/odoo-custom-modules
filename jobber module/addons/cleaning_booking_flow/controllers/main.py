@@ -8,8 +8,8 @@ from odoo.http import request
 FALLBACK_TIMES = ["09:00 AM", "12:00 PM", "02:00 PM", "04:00 PM", "06:00 PM", "08:00 PM"]
 
 
-class CleaningBookingController(http.Controller):
-    @http.route("/cleaning-booking/services", type="json", auth="public", website=True)
+class SparkleBookingController(http.Controller):
+    @http.route("/sparkle-booking/services", type="json", auth="public", website=True)
     def services(self):
         services = request.env["cleaning.booking.service"].sudo().search(
             [("active", "=", True)], order="sequence, id"
@@ -26,7 +26,7 @@ class CleaningBookingController(http.Controller):
             for service in services
         ]
 
-    @http.route("/cleaning-booking/availability", type="json", auth="public", website=True)
+    @http.route("/sparkle-booking/availability", type="json", auth="public", website=True)
     def availability(self, **payload):
         service_id = int(payload.get("service_id") or 0)
         booking_date = self._parse_booking_date(payload.get("date"))
@@ -45,7 +45,7 @@ class CleaningBookingController(http.Controller):
         return {"success": True, "slots": slots}
 
     @http.route(
-        "/cleaning-booking/create",
+        "/sparkle-booking/create",
         type="json",
         auth="public",
         website=True,

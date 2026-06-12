@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="jobber_dashboard.Dashboard">
+        <div class="o_jobber_dashboard">
+            <aside class="o_jobber_sidebar">
+                <div class="o_jobber_brand">
+                    <span class="o_jobber_brand_icon">JD</span>
+                    <span>Jobber Dashboard</span>
+                </div>
+                <button class="o_jobber_nav_item o_jobber_nav_active" t-on-click="() => openAction(state.data.actions.home)">Home</button>
+                <button class="o_jobber_nav_item" t-on-click="() => openAction(state.data.actions.clients)">Clients</button>
+                <button class="o_jobber_nav_item" t-on-click="() => openAction(state.data.actions.leads)">Leads</button>
+                <button class="o_jobber_nav_item" t-on-click="() => openAction(state.data.actions.quotations)">Quotations</button>
+                <button class="o_jobber_nav_item" t-on-click="() => openAction(state.data.actions.tasks)">Tasks</button>
+                <button class="o_jobber_nav_item" t-on-click="() => openAction(state.data.actions.invoices)">Invoices</button>
+                <button class="o_jobber_nav_item" t-on-click="() => openAction(state.data.actions.schedule)">Appointments</button>
+            </aside>
+
+            <main class="o_jobber_main">
+                <t t-if="state.loading">
+                    <div class="o_jobber_loading">Loading dashboard...</div>
+                </t>
+                <t t-else="">
+                    <section class="o_jobber_header">
+                        <span class="o_jobber_date" t-esc="state.data.todayLabel"/>
+                        <h1 t-esc="state.data.greeting"/>
+                    </section>
+
+                    <section class="o_jobber_section">
+                        <h2>Workflow</h2>
+                        <div class="o_jobber_workflow_grid">
+                            <div class="o_jobber_workflow_card o_jobber_accent_orange" t-on-click="() => openAction(state.data.workflow.leads.action)">
+                                <span class="o_jobber_card_label">Leads</span>
+                                <strong t-esc="state.data.workflow.leads.count"/>
+                                <span class="o_jobber_card_text">New leads</span>
+                                <small t-esc="state.data.workflow.leads.sub"/>
+                            </div>
+                            <div class="o_jobber_workflow_card o_jobber_accent_pink" t-on-click="() => openAction(state.data.workflow.quotations.action)">
+                                <span class="o_jobber_card_label">Quotations</span>
+                                <strong t-esc="state.data.workflow.quotations.count"/>
+                                <span class="o_jobber_card_text">Approved / sent</span>
+                                <small t-esc="state.data.workflow.quotations.sub"/>
+                            </div>
+                            <div class="o_jobber_workflow_card o_jobber_accent_green" t-on-click="() => openAction(state.data.workflow.tasks.action)">
+                                <span class="o_jobber_card_label">Tasks</span>
+                                <strong t-esc="state.data.workflow.tasks.count"/>
+                                <span class="o_jobber_card_text">Requires action</span>
+                                <small t-esc="state.data.workflow.tasks.sub"/>
+                            </div>
+                            <div class="o_jobber_workflow_card o_jobber_accent_blue" t-on-click="() => openAction(state.data.workflow.invoices.action)">
+                                <span class="o_jobber_card_label">Invoices</span>
+                                <strong t-esc="state.data.workflow.invoices.count"/>
+                                <span class="o_jobber_card_text">Awaiting payment</span>
+                                <small t-esc="state.data.workflow.invoices.sub"/>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="o_jobber_content_grid">
+                        <section class="o_jobber_section">
+                            <h2>Today's Appointments</h2>
+                            <div class="o_jobber_appointments_card">
+                                <div class="o_jobber_appointment_stats">
+                                    <div>
+                                        <span>Total</span>
+                                        <strong t-esc="state.data.appointments.total"/>
+                                    </div>
+                                    <div>
+                                        <span>Active</span>
+                                        <strong t-esc="state.data.appointments.active"/>
+                                    </div>
+                                    <div>
+                                        <span>Completed</span>
+                                        <strong t-esc="state.data.appointments.completed"/>
+                                    </div>
+                                    <div>
+                                        <span>Overdue</span>
+                                        <strong t-esc="state.data.appointments.overdue"/>
+                                    </div>
+                                    <div>
+                                        <span>Remaining</span>
+                                        <strong t-esc="state.data.appointments.remaining"/>
+                                    </div>
+                                    <button type="button" class="o_jobber_outline_btn" t-on-click="() => openAction(state.data.appointments.action)">View Schedule</button>
+                                </div>
+                                <div class="o_jobber_schedule_rows">
+                                    <div><b t-esc="state.data.appointments.overdue"/> overdue appointments</div>
+                                    <div><b t-esc="state.data.appointments.active"/> active appointments</div>
+                                    <div><b t-esc="state.data.appointments.remaining"/> remaining appointments</div>
+                                    <div><b t-esc="state.data.appointments.completed"/> completed appointments</div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <aside class="o_jobber_side_panel">
+                            <section class="o_jobber_section">
+                                <h2>Alerts</h2>
+                                <div class="o_jobber_alert_card" t-on-click="() => openAction(state.data.actions.invoices)">
+                                    <span class="o_jobber_dot"/>
+                                    <span><b t-esc="state.data.alerts.overdueInvoices"/> overdue invoices</span>
+                                </div>
+                                <div class="o_jobber_alert_card" t-on-click="() => openAction(state.data.actions.tasks)">
+                                    <span class="o_jobber_dot"/>
+                                    <span><b t-esc="state.data.alerts.lateTasks"/> late tasks</span>
+                                </div>
+                                <div class="o_jobber_alert_card" t-on-click="() => openAction(state.data.actions.schedule)">
+                                    <span class="o_jobber_dot"/>
+                                    <span><b t-esc="state.data.alerts.upcomingAppointments"/> upcoming appointments</span>
+                                </div>
+                            </section>
+
+                            <section class="o_jobber_section">
+                                <h2>Business Performance</h2>
+                                <div class="o_jobber_performance_card" t-on-click="() => openAction(state.data.performance.receivables.action)">
+                                    <span>Receivables</span>
+                                    <strong t-esc="state.data.performance.receivables.value"/>
+                                    <small t-esc="state.data.performance.receivables.sub"/>
+                                </div>
+                                <div class="o_jobber_performance_card" t-on-click="() => openAction(state.data.performance.upcomingJobs.action)">
+                                    <span>Upcoming jobs</span>
+                                    <strong t-esc="state.data.performance.upcomingJobs.value"/>
+                                    <small t-esc="state.data.performance.upcomingJobs.sub"/>
+                                </div>
+                                <div class="o_jobber_performance_card" t-on-click="() => openAction(state.data.performance.revenue.action)">
+                                    <span>Revenue this month</span>
+                                    <strong t-esc="state.data.performance.revenue.value"/>
+                                    <small t-esc="state.data.performance.revenue.sub"/>
+                                </div>
+                            </section>
+                        </aside>
+                    </div>
+                </t>
+            </main>
+        </div>
+    </t>
+</templates>

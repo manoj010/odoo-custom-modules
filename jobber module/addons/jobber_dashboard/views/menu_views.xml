@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_jobber_leads" model="ir.actions.act_window">
+        <field name="name">Leads</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">kanban,list,form,calendar,activity</field>
+        <field name="domain">[('type', '=', 'lead')]</field>
+        <field name="context">{'default_type': 'lead'}</field>
+    </record>
+
+    <record id="action_jobber_clients" model="ir.actions.act_window">
+        <field name="name">Clients</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('customer_rank', '&gt;', 0)]</field>
+        <field name="context">{'default_customer_rank': 1}</field>
+    </record>
+
+    <record id="action_jobber_quotations" model="ir.actions.act_window">
+        <field name="name">Quotations</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">list,kanban,form,calendar,pivot,graph,activity</field>
+        <field name="domain">[('state', 'in', ['draft', 'sent', 'sale'])]</field>
+        <field name="context">{'search_default_draft': 1, 'search_default_sent': 1}</field>
+    </record>
+
+    <record id="action_jobber_tasks" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">kanban,list,form,calendar,pivot,graph,activity</field>
+        <field name="domain">[('active', '=', True)]</field>
+    </record>
+
+    <record id="action_jobber_invoices" model="ir.actions.act_window">
+        <field name="name">Invoices</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,kanban,form,activity</field>
+        <field name="domain">[('move_type', '=', 'out_invoice')]</field>
+        <field name="context">{'default_move_type': 'out_invoice'}</field>
+    </record>
+
+    <record id="action_jobber_schedule" model="ir.actions.act_window">
+        <field name="name">Appointments</field>
+        <field name="res_model">calendar.event</field>
+        <field name="view_mode">calendar,list,form</field>
+    </record>
+
+    <menuitem id="menu_jobber_service_crm_root" name="Jobber Dashboard" action="action_jobber_dashboard" sequence="20"/>
+    <menuitem id="menu_jobber_service_crm_home" name="Home" parent="menu_jobber_service_crm_root" action="action_jobber_dashboard" sequence="1"/>
+    <menuitem id="menu_jobber_service_crm_clients" name="Clients" parent="menu_jobber_service_crm_root" action="action_jobber_clients" sequence="10"/>
+    <menuitem id="menu_jobber_service_crm_leads" name="Leads" parent="menu_jobber_service_crm_root" action="action_jobber_leads" sequence="20"/>
+    <menuitem id="menu_jobber_service_crm_quotes" name="Quotations" parent="menu_jobber_service_crm_root" action="action_jobber_quotations" sequence="30"/>
+    <menuitem id="menu_jobber_service_crm_tasks" name="Tasks" parent="menu_jobber_service_crm_root" action="action_jobber_tasks" sequence="40"/>
+    <menuitem id="menu_jobber_service_crm_invoices" name="Invoices" parent="menu_jobber_service_crm_root" action="action_jobber_invoices" sequence="50"/>
+    <menuitem id="menu_jobber_service_crm_schedule" name="Appointments" parent="menu_jobber_service_crm_root" action="action_jobber_schedule" sequence="60"/>
+</odoo>

@@ -1,9 +1,9 @@
 from odoo import fields, models
 
 
-class CleaningBookingService(models.Model):
+class SparkleBookingService(models.Model):
     _name = "cleaning.booking.service"
-    _description = "Cleaning Booking Service"
+    _description = "Sparkle Booking Service"
     _order = "sequence, id"
 
     name = fields.Char(required=True)
@@ -15,9 +15,9 @@ class CleaningBookingService(models.Model):
     sequence = fields.Integer(default=10)
 
 
-class CleaningBookingAvailability(models.Model):
+class SparkleBookingAvailability(models.Model):
     _name = "cleaning.booking.availability"
-    _description = "Cleaning Booking Availability"
+    _description = "Sparkle Booking Availability"
     _order = "service_id, weekday, start_time"
 
     service_id = fields.Many2one("cleaning.booking.service", required=True, ondelete="cascade")
@@ -40,9 +40,9 @@ class CleaningBookingAvailability(models.Model):
     active = fields.Boolean(default=True)
 
 
-class CleaningBooking(models.Model):
+class SparkleBooking(models.Model):
     _name = "cleaning.booking"
-    _description = "Cleaning Booking"
+    _description = "Sparkle Booking"
     _order = "create_date desc"
 
     service_id = fields.Many2one("cleaning.booking.service", required=True)

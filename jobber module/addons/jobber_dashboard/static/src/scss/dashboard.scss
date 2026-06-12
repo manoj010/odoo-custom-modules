@@ -1,0 +1,301 @@
+.o_jobber_dashboard {
+    --jobber-bg: #f8f8f6;
+    --jobber-card: #ffffff;
+    --jobber-navy: #002b3a;
+    --jobber-muted: #6b7c83;
+    --jobber-border: #dde3e5;
+    --jobber-green: #2f8a22;
+    --jobber-orange: #b96b12;
+    --jobber-pink: #9b234e;
+    --jobber-blue: #1f5f8b;
+    --jobber-sidebar: #efeee9;
+
+    background: var(--jobber-bg);
+    color: var(--jobber-navy);
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    min-height: calc(100vh - 46px);
+}
+
+.o_jobber_sidebar {
+    background: var(--jobber-sidebar);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 24px 12px;
+}
+
+.o_jobber_brand {
+    align-items: center;
+    display: flex;
+    font-size: 17px;
+    font-weight: 800;
+    gap: 12px;
+    margin-bottom: 34px;
+}
+
+.o_jobber_brand_icon {
+    align-items: center;
+    background: #fff;
+    border: 1px solid var(--jobber-border);
+    border-radius: 8px;
+    display: inline-flex;
+    height: 34px;
+    justify-content: center;
+    width: 34px;
+}
+
+.o_jobber_nav_item {
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
+    color: var(--jobber-navy);
+    font-weight: 600;
+    padding: 12px 16px;
+    text-align: left;
+
+    &:hover,
+    &.o_jobber_nav_active {
+        background: #fff;
+    }
+}
+
+.o_jobber_main {
+    padding: 36px 46px 48px;
+}
+
+.o_jobber_loading {
+    background: var(--jobber-card);
+    border: 1px solid var(--jobber-border);
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.o_jobber_header {
+    margin-bottom: 32px;
+
+    h1 {
+        font-size: 38px;
+        font-weight: 800;
+        letter-spacing: 0;
+        line-height: 1.2;
+        margin: 10px 0 0;
+    }
+}
+
+.o_jobber_date,
+.o_jobber_card_label,
+.o_jobber_workflow_card small,
+.o_jobber_appointment_stats span,
+.o_jobber_performance_card small {
+    color: var(--jobber-muted);
+}
+
+.o_jobber_section {
+    margin-bottom: 30px;
+
+    h2 {
+        color: var(--jobber-navy);
+        font-size: 24px;
+        font-weight: 800;
+        margin: 0 0 14px;
+    }
+}
+
+.o_jobber_workflow_grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.o_jobber_workflow_card,
+.o_jobber_appointments_card,
+.o_jobber_alert_card,
+.o_jobber_performance_card {
+    background: var(--jobber-card);
+    border: 1px solid var(--jobber-border);
+    border-radius: 12px;
+}
+
+.o_jobber_workflow_card {
+    border-radius: 0;
+    border-top-width: 6px;
+    cursor: pointer;
+    min-height: 140px;
+    padding: 22px;
+    transition: transform 120ms ease, box-shadow 120ms ease;
+
+    &:first-child {
+        border-bottom-left-radius: 12px;
+        border-top-left-radius: 12px;
+    }
+
+    &:last-child {
+        border-bottom-right-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+
+    &:hover {
+        box-shadow: 0 10px 24px rgba(0, 43, 58, 0.08);
+        transform: translateY(-1px);
+    }
+
+    strong {
+        display: inline-block;
+        font-size: 32px;
+        line-height: 1;
+        margin: 18px 12px 8px 0;
+    }
+
+    small {
+        display: block;
+        font-size: 14px;
+    }
+}
+
+.o_jobber_card_label,
+.o_jobber_card_text {
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.o_jobber_accent_orange {
+    border-top-color: var(--jobber-orange);
+}
+
+.o_jobber_accent_pink {
+    border-top-color: var(--jobber-pink);
+}
+
+.o_jobber_accent_green {
+    border-top-color: var(--jobber-green);
+}
+
+.o_jobber_accent_blue {
+    border-top-color: var(--jobber-blue);
+}
+
+.o_jobber_content_grid {
+    display: grid;
+    gap: 48px;
+    grid-template-columns: minmax(0, 1fr) 340px;
+}
+
+.o_jobber_appointments_card {
+    padding: 26px 28px;
+}
+
+.o_jobber_appointment_stats {
+    align-items: center;
+    display: grid;
+    gap: 24px;
+    grid-template-columns: repeat(5, minmax(80px, 1fr)) auto;
+
+    strong {
+        display: block;
+        font-size: 25px;
+        margin-top: 6px;
+    }
+}
+
+.o_jobber_outline_btn {
+    background: #f8fff6;
+    border: 1px solid var(--jobber-green);
+    border-radius: 8px;
+    color: var(--jobber-green);
+    font-weight: 600;
+    padding: 10px 18px;
+    white-space: nowrap;
+}
+
+.o_jobber_schedule_rows {
+    display: grid;
+    gap: 12px;
+    margin-top: 28px;
+
+    div {
+        background: #f5f5f3;
+        border: 1px solid #ecefed;
+        border-radius: 8px;
+        color: var(--jobber-muted);
+        min-height: 54px;
+        padding: 16px 18px;
+    }
+}
+
+.o_jobber_alert_card {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 10px;
+    padding: 18px 24px;
+}
+
+.o_jobber_dot {
+    background: #dc2f2f;
+    border-radius: 999px;
+    height: 7px;
+    width: 7px;
+}
+
+.o_jobber_performance_card {
+    cursor: pointer;
+    margin-bottom: 28px;
+    padding: 18px 26px;
+
+    span {
+        display: block;
+        font-size: 19px;
+        font-weight: 800;
+    }
+
+    strong {
+        display: block;
+        font-size: 24px;
+        margin: 6px 0 2px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .o_jobber_dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .o_jobber_sidebar {
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 12px;
+    }
+
+    .o_jobber_brand {
+        margin: 0 14px 0 0;
+        min-width: max-content;
+    }
+
+    .o_jobber_nav_item {
+        min-width: max-content;
+    }
+
+    .o_jobber_workflow_grid,
+    .o_jobber_content_grid {
+        grid-template-columns: 1fr;
+    }
+
+    .o_jobber_workflow_card {
+        border-radius: 12px;
+    }
+}
+
+@media (max-width: 760px) {
+    .o_jobber_main {
+        padding: 24px 16px;
+    }
+
+    .o_jobber_header h1 {
+        font-size: 30px;
+    }
+
+    .o_jobber_appointment_stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}

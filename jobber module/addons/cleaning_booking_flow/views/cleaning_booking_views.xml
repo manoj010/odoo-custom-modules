@@ -164,7 +164,7 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem id="cleaning_booking_menu_root" name="Cleaning Booking" sequence="30"/>
+    <menuitem id="cleaning_booking_menu_root" name="Sparkle Booking" sequence="30"/>
     <menuitem id="cleaning_booking_menu_bookings" name="Bookings" parent="cleaning_booking_menu_root" action="cleaning_booking_action" sequence="10"/>
     <menuitem id="cleaning_booking_menu_services" name="Service Options" parent="cleaning_booking_menu_root" action="cleaning_booking_service_action" sequence="20"/>
     <menuitem id="cleaning_booking_menu_availability" name="Availability" parent="cleaning_booking_menu_root" action="cleaning_booking_availability_action" sequence="30"/>
