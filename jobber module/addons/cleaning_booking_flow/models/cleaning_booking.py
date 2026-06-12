@@ -49,41 +49,57 @@ class CleaningBookingAvailability(models.Model):
     )
     start_time = fields.Float(required=True, default=9.0)
     end_time = fields.Float(required=True, default=18.0)
-    slot_interval_minutes = fields.Integer(default=60, required=True)
+    slot_interval_minutes = fields.Float(
+        related="service_id.appointment_duration",
+        string="Slot Interval (hrs)",
+        store=True,
+        readonly=False,
+    )
     active = fields.Boolean(default=True)
 
 
-class CleaningBooking(models.Model):
-    _name = "cleaning.booking"
-    _description = "Cleaning Booking"
-    _order = "create_date desc"
+# class CleaningBooking(models.Model):
+#     _name = "cleaning.booking"
+#     _description = "Cleaning Booking"
+#     _order = "create_date desc"
 
-    # service_id = fields.Many2one("cleaning.booking.service", required=True)
-    service_id = fields.Many2one("appointment.type", required=True)
-    customer_name = fields.Char(required=True)
-    email = fields.Char(required=True)
-    phone = fields.Char()
-    location = fields.Char()
-    message = fields.Text()
-    booking_date = fields.Date()
-    booking_time = fields.Char()
-    price = fields.Float()
+#     # service_id = fields.Many2one("cleaning.booking.service", required=True)
+#     service_id = fields.Many2one("appointment.type", required=True)
+#     customer_name = fields.Char(required=True)
+#     email = fields.Char(required=True)
+#     phone = fields.Char()
+#     location = fields.Char()
+#     message = fields.Text()
+#     booking_date = fields.Date()
+#     booking_time = fields.Char()
+#     price = fields.Float()
+#     payment_status = fields.Selection(
+#         [
+#             ("pending", "Pending"),
+#             ("paid", "Paid"),
+#             ("failed", "Failed"),
+#         ],
+#         default="pending",
+#         required=True,
+#     )
+#     state = fields.Selection(
+#         [
+#             ("draft", "Draft"),
+#             ("confirmed", "Confirmed"),
+#             ("cancelled", "Cancelled"),
+#         ],
+#         default="draft",
+#         required=True,
+#     )
+#     notes = fields.Text()
+
+
+class CleaningBooking(models.Model):
+    _inherit = "calendar.event"
+
+    price = fields.Float(string="Price")
     payment_status = fields.Selection(
-        [
-            ("pending", "Pending"),
-            ("paid", "Paid"),
-            ("failed", "Failed"),
-        ],
+        [("pending", "Pending"), ("paid", "Paid"), ("failed", "Failed")],
         default="pending",
-        required=True,
     )
-    state = fields.Selection(
-        [
-            ("draft", "Draft"),
-            ("confirmed", "Confirmed"),
-            ("cancelled", "Cancelled"),
-        ],
-        default="draft",
-        required=True,
-    )
-    notes = fields.Text()
+    is_cleaning_booking = fields.Boolean(default=False)

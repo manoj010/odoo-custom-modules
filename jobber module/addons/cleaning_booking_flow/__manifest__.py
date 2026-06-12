@@ -8,6 +8,7 @@
     "depends": [
         "web",
         "website",
+        "appointment",
     ],
     "data": [
         "security/ir.model.access.csv",

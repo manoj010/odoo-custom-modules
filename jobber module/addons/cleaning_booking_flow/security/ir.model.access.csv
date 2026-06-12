@@ -1,4 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_cleaning_booking_service_user,cleaning.booking.service user,model_cleaning_booking_service,base.group_user,1,1,1,1
 access_cleaning_booking_availability_user,cleaning.booking.availability user,model_cleaning_booking_availability,base.group_user,1,1,1,1
-access_cleaning_booking_user,cleaning.booking user,model_cleaning_booking,base.group_user,1,1,1,1
+
