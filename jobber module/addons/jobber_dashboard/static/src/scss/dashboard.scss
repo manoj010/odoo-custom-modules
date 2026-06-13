@@ -14,7 +14,10 @@
     color: var(--jobber-navy);
     display: grid;
     grid-template-columns: 180px minmax(0, 1fr);
+    height: 100%;
     min-height: calc(100vh - 46px);
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .o_jobber_sidebar {
@@ -61,7 +64,8 @@
 }
 
 .o_jobber_main {
-    padding: 36px 46px 48px;
+    min-width: 0;
+    padding: 36px 46px 96px;
 }
 
 .o_jobber_loading {
@@ -105,6 +109,9 @@
 .o_jobber_workflow_grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
+    overflow: hidden;
+    border: 1px solid var(--jobber-border);
+    border-radius: 12px;
 }
 
 .o_jobber_workflow_card,
@@ -117,21 +124,24 @@
 }
 
 .o_jobber_workflow_card {
+    align-content: start;
     border-radius: 0;
+    border-width: 0 1px 0 0;
     border-top-width: 6px;
     cursor: pointer;
-    min-height: 140px;
-    padding: 22px;
+    min-height: 132px;
+    padding: 26px 22px 24px;
     transition: transform 120ms ease, box-shadow 120ms ease;
 
     &:first-child {
-        border-bottom-left-radius: 12px;
-        border-top-left-radius: 12px;
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
     }
 
     &:last-child {
-        border-bottom-right-radius: 12px;
-        border-top-right-radius: 12px;
+        border-right-width: 0;
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
     }
 
     &:hover {
@@ -140,22 +150,43 @@
     }
 
     strong {
-        display: inline-block;
+        color: var(--jobber-navy);
+        display: block;
         font-size: 32px;
         line-height: 1;
-        margin: 18px 12px 8px 0;
+        margin: 0;
     }
 
     small {
         display: block;
         font-size: 14px;
+        line-height: 1.4;
     }
 }
 
-.o_jobber_card_label,
-.o_jobber_card_text {
+.o_jobber_card_label {
+    display: block;
     font-size: 15px;
     font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 12px;
+}
+
+.o_jobber_card_metric {
+    align-items: baseline;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 8px;
+    min-width: 0;
+}
+
+.o_jobber_card_text {
+    color: var(--jobber-navy);
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.2;
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .o_jobber_accent_orange {

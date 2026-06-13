@@ -86,11 +86,21 @@ class JobberDashboardController(http.Controller):
             "invoices": env.ref("jobber_dashboard.action_jobber_invoices").id,
             "schedule": env.ref("jobber_dashboard.action_jobber_schedule").id,
         }
+        menus = {
+            "home": env.ref("jobber_dashboard.menu_jobber_service_crm_home").id,
+            "clients": env.ref("jobber_dashboard.menu_jobber_service_crm_clients").id,
+            "leads": env.ref("jobber_dashboard.menu_jobber_service_crm_leads").id,
+            "quotations": env.ref("jobber_dashboard.menu_jobber_service_crm_quotes").id,
+            "tasks": env.ref("jobber_dashboard.menu_jobber_service_crm_tasks").id,
+            "invoices": env.ref("jobber_dashboard.menu_jobber_service_crm_invoices").id,
+            "schedule": env.ref("jobber_dashboard.menu_jobber_service_crm_schedule").id,
+        }
 
         return {
             "todayLabel": now_local.strftime("%A, %B %d"),
             "greeting": f"Good {day_part}, {user.name}",
             "actions": actions,
+            "menus": menus,
             "workflow": {
                 "leads": {
                     "count": env["crm.lead"].search_count(lead_domain),

@@ -10,6 +10,7 @@ export class JobberDashboard extends Component {
 
     setup() {
         this.action = useService("action");
+        this.menu = useService("menu");
         this.state = useState({
             loading: true,
             data: {},
@@ -23,8 +24,25 @@ export class JobberDashboard extends Component {
 
     openAction(actionId) {
         if (actionId) {
-            this.action.doAction(actionId);
+            this.action.doAction(actionId, { clearBreadcrumbs: true });
         }
+    }
+
+    openMenu(menuId) {
+        if (menuId) {
+            this.menu.selectMenu(menuId);
+        }
+    }
+
+    openNav(key) {
+        const menuId = this.state.data.menus && this.state.data.menus[key];
+        if (menuId) {
+            this.openMenu(menuId);
+            return;
+        }
+
+        const actionId = this.state.data.actions && this.state.data.actions[key];
+        this.openAction(actionId);
     }
 }
 
