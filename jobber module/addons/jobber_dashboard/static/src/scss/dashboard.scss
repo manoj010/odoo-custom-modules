@@ -30,22 +30,22 @@
 
 .o_jobber_brand {
     align-items: center;
+    color: var(--jobber-navy);
     display: flex;
-    font-size: 17px;
+    flex-direction: column;
+    font-size: 18px;
     font-weight: 800;
-    gap: 12px;
-    margin-bottom: 34px;
-}
-
-.o_jobber_brand_icon {
-    align-items: center;
-    background: #fff;
-    border: 1px solid var(--jobber-border);
-    border-radius: 8px;
-    display: inline-flex;
-    height: 34px;
+    gap: 2px;
     justify-content: center;
-    width: 34px;
+    letter-spacing: 0;
+    line-height: 1.35;
+    margin: 28px 0 42px;
+    text-align: center;
+    width: 100%;
+
+    span {
+        display: block;
+    }
 }
 
 .o_jobber_nav_item {
@@ -131,6 +131,7 @@
     cursor: pointer;
     min-height: 132px;
     padding: 26px 22px 24px;
+    position: relative;
     transition: transform 120ms ease, box-shadow 120ms ease;
 
     &:first-child {
@@ -161,6 +162,38 @@
         display: block;
         font-size: 14px;
         line-height: 1.4;
+    }
+}
+
+.o_jobber_card_open_icon {
+    height: 14px;
+    opacity: 1;
+    position: absolute;
+    right: 24px;
+    top: 28px;
+    width: 14px;
+
+    &::before {
+        background: var(--jobber-navy);
+        content: "";
+        height: 1.25px;
+        left: -3px;
+        position: absolute;
+        top: 1px;
+        transform: rotate(-45deg);
+        transform-origin: right center;
+        width: 16px;
+    }
+
+    &::after {
+        border-right: 1.25px solid var(--jobber-navy);
+        border-top: 1.25px solid var(--jobber-navy);
+        content: "";
+        height: 8px;
+        position: absolute;
+        right: 1px;
+        top: 1px;
+        width: 8px;
     }
 }
 
@@ -211,6 +244,10 @@
     grid-template-columns: minmax(0, 1fr) 340px;
 }
 
+.o_jobber_main_column {
+    min-width: 0;
+}
+
 .o_jobber_appointments_card {
     padding: 26px 28px;
 }
@@ -236,6 +273,96 @@
     font-weight: 600;
     padding: 10px 18px;
     white-space: nowrap;
+}
+
+.o_jobber_section_header {
+    align-items: center;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    margin-bottom: 14px;
+
+    h2 {
+        margin: 0;
+    }
+}
+
+.o_jobber_upcoming_card {
+    background: var(--jobber-card);
+    border: 1px solid var(--jobber-border);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.o_jobber_schedule_item {
+    align-items: start;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--jobber-border);
+    color: var(--jobber-navy);
+    cursor: pointer;
+    display: grid;
+    gap: 18px;
+    grid-template-columns: 92px minmax(0, 1fr) auto;
+    padding: 18px 22px;
+    text-align: left;
+    width: 100%;
+
+    &:last-child {
+        border-bottom: 0;
+    }
+
+    &:hover {
+        background: #fbfbfa;
+    }
+}
+
+.o_jobber_schedule_time {
+    color: var(--jobber-navy);
+    font-weight: 800;
+}
+
+.o_jobber_schedule_details {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+
+    strong {
+        color: var(--jobber-navy);
+        font-size: 15px;
+    }
+
+    span {
+        color: var(--jobber-muted);
+    }
+}
+
+.o_jobber_schedule_badge {
+    align-self: start;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 5px 10px;
+}
+
+.o_jobber_schedule_badge_today {
+    background: #eaf5e8;
+    color: var(--jobber-green);
+}
+
+.o_jobber_schedule_badge_upcoming {
+    background: #edf5fa;
+    color: var(--jobber-blue);
+}
+
+.o_jobber_schedule_badge_overdue {
+    background: #fff3e8;
+    color: var(--jobber-orange);
+}
+
+.o_jobber_schedule_empty {
+    color: var(--jobber-muted);
+    padding: 24px 22px;
 }
 
 .o_jobber_schedule_rows {
@@ -299,8 +426,11 @@
     }
 
     .o_jobber_brand {
+        align-items: flex-start;
+        font-size: 16px;
         margin: 0 14px 0 0;
         min-width: max-content;
+        text-align: left;
     }
 
     .o_jobber_nav_item {
@@ -328,5 +458,10 @@
 
     .o_jobber_appointment_stats {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .o_jobber_schedule_item {
+        grid-template-columns: 1fr;
+        gap: 8px;
     }
 }

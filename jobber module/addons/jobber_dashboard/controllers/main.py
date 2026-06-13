@@ -46,6 +46,9 @@ class JobberDashboardController(http.Controller):
             ("start", ">=", fields.Datetime.to_string(today_start)),
             ("start", "<", fields.Datetime.to_string(tomorrow_start)),
         ]
+        upcoming_schedule_domain = [
+            ("start", ">=", fields.Datetime.to_string(today_start)),
+        ]
 
         appointments = env["calendar.event"].search(appointment_today_domain)
         now_naive = now_utc.replace(tzinfo=None)
@@ -55,6 +58,7 @@ class JobberDashboardController(http.Controller):
         overdue_appointments = appointments.filtered(
             lambda event: event.start and event.stop and event.stop < now_naive and event.start.date() == today
         )
+        upcoming_schedule_events = env["calendar.event"].search(upcoming_schedule_domain, order="start asc", limit=5)
 
         receivable_moves = env["account.move"].search(invoice_domain)
         revenue_domain = [
@@ -131,6 +135,10 @@ class JobberDashboardController(http.Controller):
                 "remaining": len(remaining_appointments),
                 "action": actions["schedule"],
             },
+            "upcomingSchedule": [
+                self._format_schedule_event(event, user_tz, today, now_naive)
+                for event in upcoming_schedule_events
+            ],
             "performance": {
                 "receivables": {
                     "value": money(sum(receivable_moves.mapped("amount_residual_signed"))),
@@ -163,3 +171,23 @@ class JobberDashboardController(http.Controller):
         if currency.position == "after":
             return f"{sign}{formatted} {symbol}".strip()
         return f"{sign}{symbol} {formatted}".strip()
+
+    def _format_schedule_event(self, event, user_tz, today, now_naive):
+        start_local = pytz.utc.localize(event.start).astimezone(user_tz) if event.start else None
+        stop_dt = event.stop or event.start
+        if stop_dt and stop_dt < now_naive:
+            status = "Overdue"
+        elif start_local and start_local.date() == today:
+            status = "Today"
+        else:
+            status = "Upcoming"
+
+        return {
+            "id": event.id,
+            "name": event.name or "",
+            "start_datetime": fields.Datetime.to_string(event.start) if event.start else "",
+            "display_time": start_local.strftime("%I:%M %p") if start_local else "",
+            "customer_name": event.partner_ids[:1].name or "",
+            "location": event.location or "",
+            "status": status,
+        }

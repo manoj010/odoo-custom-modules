@@ -44,6 +44,20 @@ export class JobberDashboard extends Component {
         const actionId = this.state.data.actions && this.state.data.actions[key];
         this.openAction(actionId);
     }
+
+    openCalendarEvent(eventId) {
+        if (!eventId) {
+            return;
+        }
+        this.action.doAction({
+            type: "ir.actions.act_window",
+            name: "Appointment",
+            res_model: "calendar.event",
+            res_id: eventId,
+            views: [[false, "form"]],
+            target: "current",
+        });
+    }
 }
 
 registry.category("actions").add("jobber_dashboard.dashboard", JobberDashboard);
